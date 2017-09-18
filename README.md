@@ -2,7 +2,7 @@
 
 Hi, this is the repository for my first homework assignment for STAT 545 at UBC.
 
-[Click here for the STAT 545 website.](stat545.com) Enjoy!
+[Click here for the STAT 545 website.](www.stat545.com) Enjoy!
 
 
 ## Welcome to me

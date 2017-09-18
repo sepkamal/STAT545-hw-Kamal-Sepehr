@@ -26,7 +26,8 @@ Pollution | :thumbsdown:
 
 ## So...R Stats, Eh?
 
-A few years ago I started working on this project to analyze some DNA sequencing data. I was using excel. 
+A few years ago I started working on this project to analyze some DNA sequencing data. I was using excel.
+
 **It was hell.**
 
 ### Excel Strugles

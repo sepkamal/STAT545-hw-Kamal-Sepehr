@@ -42,7 +42,7 @@ So... That's why I'm hoping R can save me.
 
 ## Progress Report
 
-This README.md file was edited in RStudio after initially creating this file and repository on github.
+This README.md file was edited in RStudio after initially creating this file and repository on github. I made edits, saved, commited, and then pulled and pushed to github. I had some trouble with syntax for things like links and pictures, but after some trial and error got it working. I kept finding typos so had to keep commiting over and over.
 
 I found this site to be a really helpful while putting this together: [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 

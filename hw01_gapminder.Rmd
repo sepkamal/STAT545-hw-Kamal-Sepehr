@@ -3,7 +3,7 @@ title: "hw01_gapminder.Rmd"
 output: github_document
 ---
 
-This is my exploration of the gapminder dataset using tidyverse.
+This is my exploration of the gapminder dataset using tidyverse!
 
 ```{r}
 

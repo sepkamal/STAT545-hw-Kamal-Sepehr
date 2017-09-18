@@ -12,7 +12,7 @@ My name is Sep, I did my undergrad in biology at UBC and am now doing my masters
 I am also an arsenal fan! ~~Though sometimes they drive me crazy~~
 ![alt text][logo]
 
-[logo]: http://soccersurgery.net/wp-content/uploads/2016/06/arsenal-logo-128x128.jpg "Arsenal"
+[logo]: http://soccersurgery.net/wp-content/uploads/2016/06/arsenal-logo-128x128.jpg "Arsenal Logo"
 
 Here is a random table of some things I like and dislike:
 
@@ -44,5 +44,5 @@ So... That's why I'm hoping R can save me.
 
 This README.md file was edited in RStudio after initially creating this file and repository on github. I made edits, saved, commited, and then pulled and pushed to github. I had some trouble with syntax for things like links and pictures, but after some trial and error got it working. I kept finding typos so had to keep commiting over and over.
 
-I found this site to be a really helpful while putting this together: [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
+I found this site to be really helpful while putting this together: [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 

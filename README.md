@@ -20,7 +20,7 @@ Here is a random table of some things I like and dislike:
 --- | --- 
 Biking | :thumbsup:
 Coffee | :thumbsup:
-Apples | :thumbsup:
+Apples (the fruit) | :thumbsup:
 Apple (the company) | :thumbsdown:
 Pollution | :thumbsdown:
 

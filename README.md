@@ -36,12 +36,12 @@ A few years ago I started working on this project to analyze some DNA sequencing
 + It was easy to accidentaly introduce errors to single data points.
 + With big data sets excel would get laggy and even crash.
 
-so... That's why I'm hoping R can save me.
+So... That's why I'm hoping R can save me.
 
 
 ## Progress Report
 
-This README.md file was edited in RStudio after initially creating this file and repository on github. I 
+This README.md file was edited in RStudio after initially creating this file and repository on github.
 
 I found this site to be a really helpful while putting this together: [Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 

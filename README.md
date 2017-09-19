@@ -2,7 +2,11 @@
 
 Hi, this is the repository for my first homework assignment for STAT 545 at UBC.
 
-[Click here for the STAT 545 website.](http://www.stat545.com) Enjoy!
+[Click here for the STAT 545 website.](http://www.stat545.com) 
+
+[Click here for my hw01_gapminder.md file.](https://github.com/sepkamal/STAT545-hw01-kamal-sepehr/blob/master/hw01_gapminder.md) 
+
+Enjoy!
 
 
 ## Welcome to me

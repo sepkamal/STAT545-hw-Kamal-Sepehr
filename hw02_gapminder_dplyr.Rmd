@@ -1,0 +1,181 @@
+---
+title: "Hw02 - Explore Gapminder and use dplyr"
+output: github_document
+---
+
+Load gapminder dataset and tidyverse packages
+```{r}
+library(gapminder)
+library(tidyverse)
+```
+
+## Overview of gapminder data
+```{r}
+class(gapminder)
+```
+It is a data.frame, more specifically it is a tibble.
+
+ 
+```{r}
+ncol(gapminder)
+nrow(gapminder)
+dim(gapminder)
+```
+It has 6 columns and 1704 rows. These can also been seen from str():
+```{r}
+str(gapminder)
+
+```
+
+If you wanted a visual summary of all the info for you to read, str() or summary() are very useful. If you wanted just a 1 peice of info to use as an input into another function, then functions like ncol() are more useful. This also showed the data type of each variable.
+
+Alternatively can get the data type of each variable individually:
+
+```{r}
+typeof(gapminder$continent)
+
+```
+Country, continent are factors.
+Year, Pop are int.
+lifeExp, gdpPercap are num.
+
+## Explore individual variables
+
+**Country**
+```{r}
+unique(gapminder$country)
+
+```
+This shows all possible values for country (all countries included in dataset)
+
+
+```{r}
+table(gapminder$country)
+
+barplot(table(gapminder$country))
+
+
+```
+
+These shows that each country occurs exactly 12 times. Graph is very ugly though (too many countries to see visually), it's easier to see this from the table.
+```{r}
+nrow(table(gapminder$country))
+```
+There are 142 countries present.
+
+
+```{r}
+filter(gapminder, country == "Canada") %>%
+  select(country, year)
+```
+This shows that for each of the 12 entries present for each country, each one corresponds to a different year (with 5 year intervals).  
+
+
+**Pop**
+```{r}
+mean(gapminder$pop)
+median(gapminder$pop)
+range(gapminder$pop)
+```
+The mean pop size is 29 million and the median is  7 million. The range is from 60,000 to 1.3 billion.
+
+
+
+```{r}
+filter(gapminder, pop == 1318683096)
+filter(gapminder, pop == 60011)
+```
+As suspected, China has the biggest pop!The smallest is Sao Tome and Principe, probably why I've never heard of them.
+
+```{r}
+gapminder %>% 
+  filter(year == 1997) %>% 
+  arrange(desc(pop)) %>%
+  select(country, pop) %>%
+  head(10)
+```
+Here are the top 10 countries with largest population in 1997 in descending order.
+
+We can also graph this as a barplot below, looking at the top 30 in europe:
+
+```{r}
+gapminder %>% 
+  filter(year == 1997) %>%
+  filter(continent == "Europe") %>% 
+  arrange(desc(pop)) %>%
+  head(30) %>% 
+  ggplot(aes(x=country, y=pop)) + 
+         geom_point(colour = "red", size = 2) +
+         theme(axis.text.x=element_text(angle=45,hjust=1))
+```
+
+
+
+Looking at all populations:
+```{r}
+hist(gapminder$pop)
+
+```
+The vast majority of the pop's are small (less than 200 million) with very few larger outliers. Therefore there is a strong right skew.
+
+
+Can also use ggplot to make a nicer version of the histogram:
+```{r}
+ggplot(gapminder, aes(log10(gapminder$pop))) +
+  geom_histogram(bins = 25, fill = "blue") +
+  ggtitle("Count histogram for population size") +
+  geom_vline(xintercept = mean(log10(gapminder$pop)), colour = 2, size = 2 )
+   
+```
+Here we are looking at a histogram of the counts for log10 of population size. Mean size is marked with the red line.
+
+
+
+```{r}
+gapminder %>% 
+  group_by(continent) %>%
+  ggplot(aes(x = ))
+  
+```
+
+
+graph pop size by gdppercap, color based on continent
+
+Looking at the population of countries in 2007 relative to Canada, and how this effects lifeExp. Coloured based on continent and Canada data point is labelled.
+```{r}
+pop_canada = filter(gapminder, year == 2007, country == "Canada") %>% 
+  select(pop)
+
+pop_canada <- as.numeric(pop_canada)
+canada_only <- filter(gapminder, year == 2007, country == "Canada")
+
+gapminder %>%
+  filter(year == 2007) %>% 
+  mutate(rel_pop = pop / pop_canada) %>% 
+  ggplot(aes(x=log10(rel_pop), y=lifeExp, colour = continent)) + 
+    geom_point(size = 3) +
+    geom_text(data=canada_only, label = "Canada", colour = "black", size = 4,
+              hjust = -1.1, vjust=-1)
+```
+
+
+
+
+## But I want to do more!
+
+```{r}
+filter(gapminder, country == c("Rwanda", "Afghanistan"))
+```
+This did not quite work. It alternated between Rwanda and Afganistan as the country while it did the filtering. Therefore only half of the entries for each country were found (6 each instead of 12 each). If you look at the years you can see how it alternates.
+
+Correct way:
+```{r}
+filter(gapminder, country %in% c("Rwanda", "Afghanistan"))
+```
+This gets all of intended data.
+
+## Progress report
+
+It definetely took me a lot of time as I had to keep going back to the sites dplyr-end-single-table, cm005 notes, dplyr-intro, and googling things as they came up. But it was good as I learned a lot as I experimented with different functions.
+
+I found using pipe easy and helpful. Trying to add a data label for a single data point (canada) was tough.

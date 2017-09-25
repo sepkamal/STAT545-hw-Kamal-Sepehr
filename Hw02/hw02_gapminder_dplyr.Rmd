@@ -149,6 +149,8 @@ pop_canada = filter(gapminder, year == 2007, country == "Canada") %>%
 pop_canada <- as.numeric(pop_canada)
 canada_only <- filter(gapminder, year == 2007, country == "Canada")
 
+rel_pop = 5
+
 gapminder %>%
   filter(year == 2007) %>% 
   mutate(rel_pop = pop / pop_canada) %>% 
@@ -157,7 +159,7 @@ gapminder %>%
     geom_text(data=canada_only, label = "Canada", colour = "black", size = 4,
               hjust = -1.1, vjust=-1)
 ```
-
+For some reason when I tried to knit the document it gave an error that object 'rel_pop' could not be found. Adding the line rel_pop = 5 to my code fixed this problem...
 
 
 

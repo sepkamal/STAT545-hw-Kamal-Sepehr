@@ -78,7 +78,8 @@ Country, continent are factors. Year, Pop are int. lifeExp, gdpPercap are num.
 Explore individual variables
 ----------------------------
 
-**Country**
+Country
+-------
 
 ``` r
 unique(gapminder$country)
@@ -267,7 +268,7 @@ barplot(table(gapminder$country))
 
 ![](hw02_gapminder_dplyr_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-7-1.png)
 
-These shows that each country occurs exactly 12 times. Graph is very ugly though (too many countries to see visually), it's easier to see this from the table.
+These shows that each country occurs exactly 12 times. Graph is very ugly though (too many countries to see visually), it's easier to see this from the table above.
 
 ``` r
 nrow(table(gapminder$country))
@@ -300,7 +301,8 @@ filter(gapminder, country == "Canada") %>%
 
 This shows that for each of the 12 entries present for each country, each one corresponds to a different year (with 5 year intervals).
 
-**Pop**
+Pop
+---
 
 ``` r
 mean(gapminder$pop)
@@ -340,7 +342,7 @@ filter(gapminder, pop == 60011)
     ##                  <fctr>    <fctr> <int>   <dbl> <int>     <dbl>
     ## 1 Sao Tome and Principe    Africa  1952  46.471 60011  879.5836
 
-As suspected, China has the biggest pop!The smallest is Sao Tome and Principe, probably why I've never heard of them.
+As suspected, China has the biggest pop! The smallest is Sao Tome and Principe, probably why I've never heard of them.
 
 ``` r
 gapminder %>% 
@@ -366,7 +368,7 @@ gapminder %>%
 
 Here are the top 10 countries with largest population in 1997 in descending order.
 
-We can also graph this as a barplot below, looking at the top 30 in europe:
+We can also graph this as a barplot below, looking at the top 30 countries in Europe:
 
 ``` r
 gapminder %>% 
@@ -402,13 +404,16 @@ ggplot(gapminder, aes(log10(gapminder$pop))) +
 
 ``` r
 gapminder %>% 
-  group_by(continent) %>%
-  ggplot(aes(x = ))
+  filter(country %in% c("Canada", "United States", "Mexico")) %>% 
+  ggplot(aes(x = year, y = pop, colour = country)) +
+  geom_point(aes(size = lifeExp)) +
+  geom_smooth(lwd = 1, se = FALSE, method = "lm") +
+  theme_bw() 
 ```
 
 ![](hw02_gapminder_dplyr_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-16-1.png)
 
-graph pop size by gdppercap, color based on continent
+Here is the population size of 3 north american countries, as it changed over the years. Life expectancy is indicated by the size of the points.
 
 Looking at the population of countries in 2007 relative to Canada, and how this effects lifeExp. Coloured based on continent and Canada data point is labelled.
 
@@ -427,10 +432,12 @@ gapminder %>%
   ggplot(aes(x=log10(rel_pop), y=lifeExp, colour = continent)) + 
     geom_point(size = 3) +
     geom_text(data=canada_only, label = "Canada", colour = "black", size = 4,
-              hjust = -1.1, vjust=-1)
+              hjust = 2, vjust=-1)
 ```
 
-![](hw02_gapminder_dplyr_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-17-1.png) For some reason when I tried to knit the document it gave an error that object 'rel\_pop' could not be found. Adding the line rel\_pop = 5 to my code fixed this problem...
+![](hw02_gapminder_dplyr_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-17-1.png)
+
+For some reason when I tried to knit the document it gave an error that object 'rel\_pop' could not be found. Adding the line rel\_pop = 5 to my code fixed this problem...
 
 But I want to do more!
 ----------------------
@@ -486,3 +493,5 @@ Progress report
 It definetely took me a lot of time as I had to keep going back to the sites dplyr-end-single-table, cm005 notes, dplyr-intro, and googling things as they came up. But it was good as I learned a lot as I experimented with different functions.
 
 I found using pipe easy and helpful. Trying to add a data label for a single data point (canada) was tough.
+
+![alt text](https://imgflip.com/i/1wj55o)

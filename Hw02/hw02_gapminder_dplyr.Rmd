@@ -203,6 +203,4 @@ I found using pipe easy and helpful. Trying to add a data label for a single dat
 
 
 
-![alt text][logo]
-
-[logo]: https://imgflip.com/i/1wj55o
+![logo](https://i.imgflip.com/1wj55o.jpg)

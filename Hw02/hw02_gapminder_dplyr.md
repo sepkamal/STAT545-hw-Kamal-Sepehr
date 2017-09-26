@@ -494,4 +494,4 @@ It definetely took me a lot of time as I had to keep going back to the sites dpl
 
 I found using pipe easy and helpful. Trying to add a data label for a single data point (canada) was tough.
 
-![alt text](https://imgflip.com/i/1wj55o)
+![logo](https://i.imgflip.com/1wj55o.jpg)

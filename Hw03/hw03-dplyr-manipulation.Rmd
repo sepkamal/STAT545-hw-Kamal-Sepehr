@@ -1,0 +1,218 @@
+---
+title: "Homework 03 dplyr manipulation of gapminder dataset"
+output: github_document
+---
+
+Load packages:
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(gapminder))
+
+library(knitr)
+library(kableExtra)  # did not end up using
+
+```
+
+
+Copy gapminder so don't overwrite it during manipulations:
+```{r}
+my_gap <- gapminder
+```
+
+## Get the maximum and minimum of GDP per capita for all continents
+
+
+```{r results = 'asis'}
+min_max_gdp <- my_gap %>% 
+  group_by(continent) %>% 
+  summarize(min_GDP_Percap = min(gdpPercap), 
+            max_GDP_Percap = max(gdpPercap))
+
+
+kable(min_max_gdp, align ="r", digit = 0)
+
+# kable(min_max_gdp, "html") %>%
+#   kable_styling(bootstrap_options = "striped", full_width = F, position = "float_right")
+
+# abandond the above code
+
+# graph max gdp
+min_max_gdp %>% 
+  ggplot(aes(x = continent, y = max_GDP_Percap)) +
+  geom_col(fill = "blue") +
+  ggtitle("Max GDP Percap")
+
+
+# graph min gdp
+min_max_gdp %>% 
+  ggplot(aes(x = continent, y = min_GDP_Percap)) +
+  geom_col(fill = "blue") +
+  ggtitle("Min GDP Percap")
+
+
+# graph range 
+min_max_gdp %>% 
+  ggplot(aes(x = continent, y = max_GDP_Percap)) +
+  geom_errorbar(aes(ymin = min_GDP_Percap,
+                ymax = max_GDP_Percap),
+                colour = 4,
+                size = 1,
+                linetype = 1) +
+  ggtitle("Range of GDP per capita (From min to max) - Log scale") +
+  scale_y_log10() +
+  coord_fixed(ratio = 2)
+
+
+
+```
+I made the first 2 graphs but then figured out a neat way to show both on the same graph. At first I tried seperate tables and then merging them, but nothing I did worked. I abandonded trying to make a grouped bar graph and instead used the errorplot function which worked nicely. The label on the y axis is wrong though as it should just say gdp percap without max.
+
+We can see from the graphs/table that Oceana has by far the largest minimum GDP per capita, and Asia has the largest maximum GDP per capita. The range from min to max can also be seen from the third graph.
+
+
+
+
+## Look at the spread of GDP per capita within the continents.
+
+```{r}
+## making table with mean, standard deviation, and standard error
+my_gap_means <- my_gap %>% 
+  group_by(continent) %>% 
+  summarize(mean_GDP_percap = mean(gdpPercap),
+            median_GDP_percap = median(gdpPercap),
+            sd_GDP_percap = sd(gdpPercap),
+            se_GDP_percap = sd(gdpPercap)/sqrt(length(gdpPercap)))  ## standard error of the mean
+
+kable(min_max_gdp, align ="r", digit = 0)
+
+
+## plot seperate histogram for each continent
+ggplot(my_gap, aes(gdpPercap)) +
+  facet_wrap(~ continent) +
+  geom_histogram(aes(fill = continent), bins = 20) +
+  scale_x_log10() +
+  ggtitle("Distribution of GDP per capita by continent") +
+  geom_vline(data = my_gap_means, 
+             aes(xintercept = mean_GDP_percap),  ## takes the mean values from the table made above
+             colour = 1, size = 1.5)
+
+
+## boxplot to show the distribution a different way and make outliers clearer.
+my_gap %>% 
+  ggplot(aes(x = continent, y = gdpPercap)) +
+  geom_boxplot(aes(fill = continent)) +
+  ggtitle("GDP per capita Box Plot")
+
+```
+
+For first graph, vertical line shows the mean value. It was tricky to get this to display correctly, following the facet rules( it was displayeing the same line location on all 5 graphs). Had to make changes to geom_vline and called on the values stored in the table.
+
+As we can see above, all continents except asia follow a somewhat normal + narrow distribution. Asia has an even spread. Box plot is useful to clearly show there are several very large outliers in Asia.
+
+
+## Report the absolute and/or relative abundance of countries with low life expectancy over time by continent: Compute some measure of worldwide life expectancy – you decide – a mean or median or some other quantile or perhaps your current age. Then determine how many countries on each continent have a life expectancy less than this benchmark, for each year.
+
+```{r}
+LifeExp_summary_table <-my_gap %>% 
+  ## set benchmark as 1st quartile of worldwide life Exp
+  mutate(first_quartile_lifeExp = sapply(lifeExp, function(method) quantile(lifeExp, 0.25)),
+         ## determine if lifeExp is below 1st quartile (T or F) for each
+         below_quantile = (lifeExp - first_quartile_lifeExp < 0)) %>% 
+  ## print(LifeExp_summary_table) ## used to check progress
+  group_by(continent, year) %>% 
+  ## count the absolute number of countries in each continent (by year) that are below
+  ## which() returns a vector of the entries that are TRUE
+  ## so we look at how many entries are in this vector with length()
+  summarize(num_countries_below_quantile = length(which(below_quantile))) 
+
+
+kable(LifeExp_summary_table, align ="r")
+
+LifeExp_summary_table %>% 
+  ggplot(aes(x = year, y = num_countries_below_quantile, colour = continent)) +
+  facet_wrap(~ continent) +
+  geom_line(size = 2) +
+  ggtitle('Number of countries with LifeExp below the worldwide first quartile - by continent')
+  
+
+  
+ 
+
+
+```
+First quartile of worldwide lifeExp is 48.2 years old, so 25% of lifeExp's are below this. Using this as our cutoff we can see that very few countries met this criteria in Europe, Oceana, and the Americas. In all continents the number decreases and by 2007 only Africa has a few (Asia technically also has 1).
+
+To do this I calculated a logical (true if below cutoff) and then counted the number of entries that were true.
+
+
+## Find countries with interesting stories...Lets see if any countries have significant changes in lifeExp between 2002 and 2007
+
+```{r}
+## top 10 countries fold change from 2002 to 2007
+my_gap %>%
+  filter(year == 2002 | year == 2007) %>% 
+  group_by(country) %>% 
+  arrange(year) %>% 
+  mutate(lifeExp_change = lifeExp[year==2007] - lifeExp[year==2002]) %>% 
+  arrange(desc(lifeExp_change)) %>% 
+  filter(year == 2007) %>% ## filter again so only 1 entry per country
+  select(country, continent, lifeExp_change) %>% ## get rid of other columns
+  head(10) %>%  # get just top 10
+  kable(align = "r", digits = 1) ## print top 10 countries
+
+
+## bottom 10 countries fold change from 2002 to 2007
+my_gap %>%
+  filter(year == 2002 | year == 2007) %>% 
+  group_by(country) %>% 
+  arrange(year) %>% 
+  mutate(lifeExp_change = lifeExp[year==2007] - lifeExp[year==2002]) %>% 
+  arrange(lifeExp_change) %>% 
+  filter(year == 2007) %>% ## filter again so only 1 entry per country
+  select(country, continent, lifeExp_change) %>% ## get rid of other columns
+  head(10) %>%  # get just top 10
+  kable(align = "r", digits = 1) ## print bottom 10 countries
+```
+Here we can see the top 10 countries with the largest positive and negative changes in life expectancy between 2002 and 2007. 
+
+I later added the continents to the tables to see if there's any patterns in where these countries are from. Very interestinly, the majority of countries in both tables are from Africa. This means both the largest positive and negative changes were here. Guess this indicates instability in the region over those 5 years.
+
+```{r}
+## bottom 10 countries fold change from 2002 to 2007
+my_gap %>%
+  filter(year == 2002 | year == 2007) %>% 
+  group_by(country) %>% 
+  arrange(year) %>% 
+  mutate(lifeExp_change = lifeExp[year==2007] - lifeExp[year==2002]) %>% 
+  arrange(desc(lifeExp_change)) %>% 
+  filter(year == 2007) %>% ## filter again so only 1 entry per country
+  select(country, continent, lifeExp_change) %>% ## get rid of other columns
+  head(10) %>%  # get just top 10
+  ggplot(aes(x=country, y=lifeExp_change, fill = continent)) +
+  geom_col() +
+  theme(axis.text.x=element_text(angle=45,hjust=1))
+
+
+
+## bottom 10 countries fold change from 2002 to 2007
+my_gap %>%
+  filter(year == 2002 | year == 2007) %>% 
+  group_by(country) %>% 
+  arrange(year) %>% 
+  mutate(lifeExp_change = lifeExp[year==2007] - lifeExp[year==2002]) %>% 
+  arrange(lifeExp_change) %>% 
+  filter(year == 2007) %>% ## filter again so only 1 entry per country
+  select(country, continent, lifeExp_change) %>% ## get rid of other columns
+  head(10) %>%  # get just top 10
+  ggplot(aes(x=country, y=lifeExp_change, fill = continent)) +
+  geom_col() +
+  theme(axis.text.x=element_text(angle=45,hjust=1))
+
+```
+This can also be seen from the graphs. Code is same as from tables except with ggplot instead of kable.If I was to do this again, instead of copy pasting all the code (gets mesy) I could have saved it to a variable and then called on that.
+
+## Progress Report
+As suggested in the instructions, I tried playing around with the display format to get the tables and graphs side by side, as well as trying different table display formats. Mostly I couldn't get these working and what did work I wasn't a fan of, so I didn't bother.
+
+Also learned I don't like tables...ended up spending more time playing around with ggplot (if that wasn't obvious)
+

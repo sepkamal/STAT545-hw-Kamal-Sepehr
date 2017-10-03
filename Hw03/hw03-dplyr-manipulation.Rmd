@@ -132,7 +132,7 @@ LifeExp_summary_table %>%
   ggplot(aes(x = year, y = num_countries_below_quantile, colour = continent)) +
   facet_wrap(~ continent) +
   geom_line(size = 2) +
-  ggtitle('Number of countries with LifeExp below the worldwide first quartile - by continent')
+  ggtitle('Number of countries with LifeExp below the worldwide first quartile')
   
 
   
@@ -142,7 +142,7 @@ LifeExp_summary_table %>%
 ```
 First quartile of worldwide lifeExp is 48.2 years old, so 25% of lifeExp's are below this. Using this as our cutoff we can see that very few countries met this criteria in Europe, Oceana, and the Americas. In all continents the number decreases and by 2007 only Africa has a few (Asia technically also has 1).
 
-To do this I calculated a logical (true if below cutoff) and then counted the number of entries that were true.
+To do this I calculated a logical (true if below cutoff) for each year of each country and then counted the number of entries that were true.
 
 
 ## Find countries with interesting stories...Lets see if any countries have significant changes in lifeExp between 2002 and 2007
@@ -173,6 +173,7 @@ my_gap %>%
   head(10) %>%  # get just top 10
   kable(align = "r", digits = 1) ## print bottom 10 countries
 ```
+
 Here we can see the top 10 countries with the largest positive and negative changes in life expectancy between 2002 and 2007. 
 
 I later added the continents to the tables to see if there's any patterns in where these countries are from. Very interestinly, the majority of countries in both tables are from Africa. This means both the largest positive and negative changes were here. Guess this indicates instability in the region over those 5 years.
@@ -216,3 +217,4 @@ As suggested in the instructions, I tried playing around with the display format
 
 Also learned I don't like tables...ended up spending more time playing around with ggplot (if that wasn't obvious)
 
+![logo](https://i.imgflip.com/1wj55o.jpg)

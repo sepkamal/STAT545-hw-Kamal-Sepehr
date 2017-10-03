@@ -222,12 +222,12 @@ LifeExp_summary_table %>%
   ggplot(aes(x = year, y = num_countries_below_quantile, colour = continent)) +
   facet_wrap(~ continent) +
   geom_line(size = 2) +
-  ggtitle('Number of countries with LifeExp below the worldwide first quartile - by continent')
+  ggtitle('Number of countries with LifeExp below the worldwide first quartile')
 ```
 
 ![](hw03-dplyr-manipulation_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png) First quartile of worldwide lifeExp is 48.2 years old, so 25% of lifeExp's are below this. Using this as our cutoff we can see that very few countries met this criteria in Europe, Oceana, and the Americas. In all continents the number decreases and by 2007 only Africa has a few (Asia technically also has 1).
 
-To do this I calculated a logical (true if below cutoff) and then counted the number of entries that were true.
+To do this I calculated a logical (true if below cutoff) for each year of each country and then counted the number of entries that were true.
 
 Find countries with interesting stories...Lets see if any countries have significant changes in lifeExp between 2002 and 2007
 -----------------------------------------------------------------------------------------------------------------------------
@@ -273,19 +273,20 @@ my_gap %>%
   kable(align = "r", digits = 1) ## print bottom 10 countries
 ```
 
-|          country|   continent|                                                                                     lifeExp\_change|
-|----------------:|-----------:|---------------------------------------------------------------------------------------------------:|
-|        Swaziland|      Africa|                                                                                                -4.3|
-|     South Africa|      Africa|                                                                                                -4.0|
-|          Lesotho|      Africa|                                                                                                -2.0|
-|       Mozambique|      Africa|                                                                                                -1.9|
-|            Gabon|      Africa|                                                                                                 0.0|
-|             Chad|      Africa|                                                                                                 0.1|
-|          Nigeria|      Africa|                                                                                                 0.3|
-|            Italy|      Europe|                                                                                                 0.3|
-|          Jamaica|    Americas|                                                                                                 0.5|
-|       Montenegro|      Europe|                                                                                                 0.6|
-|  Here we can see|  the top 10|  countries with the largest positive and negative changes in life expectancy between 2002 and 2007.|
+|       country|  continent|  lifeExp\_change|
+|-------------:|----------:|----------------:|
+|     Swaziland|     Africa|             -4.3|
+|  South Africa|     Africa|             -4.0|
+|       Lesotho|     Africa|             -2.0|
+|    Mozambique|     Africa|             -1.9|
+|         Gabon|     Africa|              0.0|
+|          Chad|     Africa|              0.1|
+|       Nigeria|     Africa|              0.3|
+|         Italy|     Europe|              0.3|
+|       Jamaica|   Americas|              0.5|
+|    Montenegro|     Europe|              0.6|
+
+Here we can see the top 10 countries with the largest positive and negative changes in life expectancy between 2002 and 2007.
 
 I later added the continents to the tables to see if there's any patterns in where these countries are from. Very interestinly, the majority of countries in both tables are from Africa. This means both the largest positive and negative changes were here. Guess this indicates instability in the region over those 5 years.
 
@@ -331,3 +332,5 @@ Progress Report
 As suggested in the instructions, I tried playing around with the display format to get the tables and graphs side by side, as well as trying different table display formats. Mostly I couldn't get these working and what did work I wasn't a fan of, so I didn't bother.
 
 Also learned I don't like tables...ended up spending more time playing around with ggplot (if that wasn't obvious)
+
+![logo](https://i.imgflip.com/1wj55o.jpg)

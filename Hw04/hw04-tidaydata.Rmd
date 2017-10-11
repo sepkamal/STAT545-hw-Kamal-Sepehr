@@ -11,7 +11,7 @@ suppressPackageStartupMessages(library(gapminder))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(library(knitr))
-suppressPackageStartupMessages(library(ggplot2)) ### Got an error while knitting that it couldn't find ggplot, adding this line fixed it... 
+suppressPackageStartupMessages(library(tidyverse))
 ```
 
 
@@ -19,7 +19,7 @@ suppressPackageStartupMessages(library(ggplot2)) ### Got an error while knitting
 
 Make a tibble with one row per year and columns for life expectancy for two or more countries.
 Use knitr::kable() to make this table look pretty in your rendered homework.
-Take advantage of this new data shape to scatterplot life expectancy for one country against that of another.
+Take advantage of this new data shape to scatter plot life expectancy for one country against that of another.
 
 
 ```{r}
@@ -43,7 +43,7 @@ kable(one_row_per_year, align ="r", digit = 0)
 
 
 
-Now we can graph this as a scatterplot. I am taking the instructions literally, aka each axis is the lifeExp for one of the countries (x axis is not years).
+Now we can graph this as a scatter plot. I am taking the instructions literally, aka each axis is the lifeExp for one of the countries (x axis is not years).
 
 ```{r}
 one_row_per_year %>% 
@@ -63,7 +63,7 @@ I tried to get the legend title to read years instead of factor(years) but could
 
 ### Part 1 reflection
 
-I was stuck on this for a while trying to use gather. Then I thought about trying to make to seperate tables and then joing the two tables together. Then realized a similar thing could actually work with spread! After that it was pretty easy, and I've gotten quite familiar with ggplot at this point (though it seems there's always more features that could be added to a plot).
+I was stuck on this for a while trying to use gather. Then I thought about trying to make to separate tables and then joining the two tables together. Then realized a similar thing could actually work with spread! After that it was pretty easy, and I've gotten quite familiar with ggplot at this point (though it seems there's always more features that could be added to a plot).
 
 
 
@@ -97,13 +97,13 @@ gapminder_02_07
 ```
 
 
-Try joining it with gapminder a few different ways:
+Try joining it with gapminder_02_07 a few different ways:
 
 ```{r}
 left_join(gapminder_02_07, diabetes_rates)
 ```
 
-**Left_join** takes everything from the gapminder data frame, and then adds columns for the diabetes data frame. If a country in  gapminder is missing from diabetes_rates, then it puts an 'NA' in the diabetes column. This join function is probably the most practical for real use based on my original idea.
+**Left_join** takes everything from the gapminder_02_07 data frame, and then adds columns for the diabetes data frame. If a country in  gapminder_02_07 is missing from diabetes_rates, then it puts an 'NA' in the diabetes column. This join function is probably the most practical for real use based on my original idea.
 
 
 
@@ -111,40 +111,71 @@ left_join(gapminder_02_07, diabetes_rates)
 right_join(gapminder_02_07, diabetes_rates)
 ```
 
-With **right_join**, this does the opposite of left join. It takes countries from diabetes_rates and adds columns for gapminder. Here we can see there are a lot of "NA" in lifeExp and year. This indicates diabetes_rates has a lot more countries and our filtered gapminder (because gapminder was limited to just Asia here). Interestingly there are a couple countries that were listed in diabetes_rates but did not have diabetes data, so all their columns are "NA". There are still 2 rows per country.
+With **right_join**, this does the opposite of left join. It takes countries from diabetes_rates and adds columns for gapminder_02_07 Here we can see there are a lot of "NA" in lifeExp and year. This indicates diabetes_rates has a lot more countries than  gapminder_02_07 (because gapminder was limited to just Asia here). Interestingly there are a couple countries that were listed in diabetes_rates but did not have diabetes data, so all their columns are "NA". There are still 2 rows per country.
 
 
 ```{r}
 semi_join(gapminder_02_07, diabetes_rates)
 ```
 
-**Semi_join** did not add the diabetes_prevalence column, but instead filtered down gapminder so that only countries that were also in diabetes_rates were kept. About 10 rows were removed, these removed rows correspond to the rows in left_join with "NA".
+**Semi_join** did not add the diabetes_prevalence column, but instead filtered down gapminder_02_07 so that only countries that were also in diabetes_rates were kept. About 10 rows were removed, these removed rows correspond to the rows in left_join with "NA".
 
 
 ```{r}
 inner_join(gapminder_02_07, diabetes_rates)
 ```
 
-**Inner_join** appears to be the same as semi_join in how it filtered down the rows, except that it also added the diabetes_prev column. So here there are no "NA"'s and we have all rows that match between both datasets.
+**Inner_join** appears to be the same as semi_join in how it filtered down the rows, except that it also added the diabetes_prev column. So here there are no "NA"'s and we have all rows that match between both data sets.
 
 ```{r}
 anti_join(gapminder_02_07, diabetes_rates)
 ```
 
-**Anti_join** works similar to semi_join, but instead of returning the 56 rows that matched, it reutrns the 10 rows from gapminder that were not in diabetes_rates.
+**Anti_join** works similar to semi_join, but instead of returning the 56 rows that matched, it returns the 10 rows from gapminder that were not in diabetes_rates.
 
 
 ```{r}
 full_join(gapminder_02_07, diabetes_rates)
 ```
 
-Full Join keeps all countries present in either dataset. Therefore this creates a dataset with more rows than any of the above joins.
+Full Join keeps all countries present in either data set. Therefore this creates a data set with more rows than any of the above joins.
 
-That's all the joins!!!
+That's all the joins!!! I was a little surprised that they all kept both years (2 rows per country). That was the whole reason I chose to leave in 2 years instead of 1.
 
+Let's take a look at activity #3 too:
+
+```{r}
+merge(gapminder_02_07, diabetes_rates)
+```
+
+It looks like **merge()** functioned very similarly to inner_join, keeping only countries from gapminder_02_07 for which there was a value in diabetes_prev.
+
+
+
+```{r}
+merge(gapminder_02_07, diabetes_rates, all.y = TRUE)
+```
+
+By adding all.y = TRUE, merge kept all countries present in diabetes_rates. It is the same as right_join.
+
+
+
+```{r}
+match(gapminder_02_07, diabetes_rates)
+```
+This doesn't do much.
+
+```{r}
+match(gapminder_02_07$country, diabetes_rates$country)
+```
+It looks like merge needs a vector, not a dataframe. So I fed in just the country columns. I think match takes each country in gapminder_02_07, and then returns the position in which it occurs in diabetes_rates. This makes sense as there are 66 entries, and gapminder_02_07 had 66 rows. The ones with "NA" are the countries in gapminder_02_07 that were not present in diabetes_rates.
+
+
+Merge and match do not seem particularly useful seeing as how well the join functions work.
 
 ### Part 2 reflection
 
 I'm glad I went through all the join functions individually because I now have a better understanding of what they each do. I can also see why they may all be useful in certain situations. It was also cool to pull data from the web, although perhaps in the future I can figure out how to clean up the .csv file in R so I don't need to open up excel. But for now this method worked easier than I expected, as it was my first time importing data into R. The hard part was actually finding the data on the web.
 
-I like this assingment because I can see myself using very similar methods in the near future to get data related to my grad research from the web and play around with it.
+
+I like this assignment because I can see myself using very similar methods in the near future to get data related to my grad research from the web and play around with it.

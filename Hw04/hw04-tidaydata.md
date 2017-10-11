@@ -9,7 +9,7 @@ suppressPackageStartupMessages(library(gapminder))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(library(knitr))
-suppressPackageStartupMessages(library(ggplot2)) ### Got an error while knitting that it couldn't find ggplot, adding this line fixed it... 
+suppressPackageStartupMessages(library(tidyverse))
 ```
 
 Activity \#2
@@ -256,16 +256,16 @@ anti_join(gapminder_02_07, diabetes_rates)
     ## # A tibble: 10 x 3
     ##             country lifeExp  year
     ##              <fctr>   <dbl> <int>
-    ##  1            Syria  73.053  2002
-    ##  2            Syria  74.143  2007
+    ##  1             Iran  69.451  2002
+    ##  2             Iran  70.964  2007
     ##  3 Korea, Dem. Rep.  66.662  2002
     ##  4 Korea, Dem. Rep.  67.297  2007
-    ##  5           Taiwan  76.990  2002
-    ##  6           Taiwan  78.400  2007
-    ##  7 Hong Kong, China  81.495  2002
-    ##  8 Hong Kong, China  82.208  2007
-    ##  9             Iran  69.451  2002
-    ## 10             Iran  70.964  2007
+    ##  5 Hong Kong, China  81.495  2002
+    ##  6 Hong Kong, China  82.208  2007
+    ##  7           Taiwan  76.990  2002
+    ##  8           Taiwan  78.400  2007
+    ##  9            Syria  73.053  2002
+    ## 10            Syria  74.143  2007
 
 **Anti\_join** works similar to semi\_join, but instead of returning the 56 rows that matched, it reutrns the 10 rows from gapminder that were not in diabetes\_rates.
 

@@ -11,7 +11,7 @@ suppressPackageStartupMessages(library(gapminder))
 suppressPackageStartupMessages(library(tidyr))
 suppressPackageStartupMessages(library(readr))
 suppressPackageStartupMessages(library(knitr))
-suppressPackageStartupMessages(library(ggplot2)) ### Got an error while knitting that it couldn't find ggplot, adding this line fixed it... 
+suppressPackageStartupMessages(library(tidyverse))
 ```
 
 

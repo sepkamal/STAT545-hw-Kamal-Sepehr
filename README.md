@@ -8,6 +8,11 @@ Hi, this is the repository for my homework assignments for STAT 545 at UBC.
 
 [Click here for my homework02.](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/tree/master/Hw02) 
 
+See the  file [hw03-dplyr-manipulation.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw03/hw03-dplyr-manipulation.md)  
+
+
+See the  file [hw04-tidydata.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md)  
+
 Enjoy!
 
 

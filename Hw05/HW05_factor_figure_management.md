@@ -108,7 +108,7 @@ nrow(gapminder_no_OceaniaFixed)
 
     ## [1] 1680
 
-The above shows I was able to remove Oceania using fct\_drop. I removed the extra countries as well using a similar process. It appears there are now 2 less countries. Removing the extras from the factor did not effect the number of rows, as the filter had already removed extra rows. Let's double check in the original gapminder that there were only 2 countries in Oceania (140 from 142 above):
+The above shows I was able to remove Oceania using fct\_drop. I removed the extra countries as well using a similar process. It appears there are now 2 less countries. Removing the extras from the factor did not effect the number of rows, as the filter had already removed extra rows. Let's double check in the original gapminder that there were only 2 countries in Oceania (140 vs 142 above):
 
 ``` r
 ### check which countries are in original gapminder in Oceania 
@@ -152,7 +152,7 @@ This confirms that there were only 2 countries, Australia and New Zealand, in th
 
 ### Reorder the levels of country or continent
 
-Lets reorder the levels of country by the percent diabetes prevalence in 2015, which I also used in HW04. This seemed like a cool idea since I work in a diabetes research lab.
+Lets reorder the levels of country by the percent diabetes prevalence in 2015, which I also used in [hw04-tidydata.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md). This seemed like a cool idea since I work in a diabetes research lab.
 
 ``` r
 diabetes_rates <- read.csv("diabtes_ratesedit.csv") %>% 
@@ -289,7 +289,7 @@ Interestingly, saveRDS()/readRDS() preserved the order of the factor country, un
 Visualization design
 ====================
 
-Lets look at diabetes prevalence in the America's.
+Lets look at diabetes prevalence in the America's, and see if there's any correlation with gdpPercap.
 
 ``` r
 library(viridis)
@@ -323,15 +323,15 @@ gapminder_diabetes_sort %>%
 
 ![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-8-1.png) Venezuela showed up as blank because the country's name in the diabetes data table was slightly different than in gapminder, and so it's value is listed as NA. Therefore I filtered it out from the graph.
 
-We can see above that the countries are sorted from highest to lowest prevalence. This is helpful to convey the information, as mentioned by Tamara Munzner. I did not have to use arrange to sort it, as it kept the order of the levels in country.
+We can see above that the countries are sorted from highest to lowest prevalence. This is helpful to convey the information, as mentioned by Tamara Munzner.
 
-I used a color scheme from veridis to give an accurate representation of the difference in gdpPercap between countries. There may be a slight trend, with higher gdpPercap countries having higher incidence of diabetes, but it is not clear. Canada and the US clearly stand out as having much higher gdpPercap than the rest.
+I used a color scheme from veridis to give an accurate visual representation of the difference in gdpPercap between countries. There may be a slight trend, with higher gdpPercap countries having higher incidence of diabetes, but this would require further statistical analysis. Canada and the US clearly stand out as having much higher gdpPercap than the rest.
 
 Also from the graph we can see Mexico had the highest prevalence of diabetes, and Argentina had the lowest. Canada was towards the low end.
 
-As I want to show this plot multiple times in a row (with slightly different inputs) I saved the plot settings to a function.
+As I want to show this plot multiple times (with slightly different inputs) I saved the plot settings to a function. I will call upon this function again below.
 
-Now lets do the same plot using the data table read from the csv file. I expect the countries to be sorted alphabetically:
+Now lets make the same plot using the data table read from the csv file. I expect the countries to be sorted alphabetically this time:
 
 ``` r
 gapminder_diabetes_sort_csv %>% 
@@ -340,7 +340,9 @@ gapminder_diabetes_sort_csv %>%
 
 ![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-9-1.png)
 
-Now lets take the csv version again, and lets arrange by diabetes prevalence using arrange().
+As I expected it is sorted alphabetically as the factor level order was lost.
+
+Now lets take the .csv version again, and lets arrange() by diabetes prevalence.
 
 ``` r
 gapminder_diabetes_sort_csv %>% 
@@ -348,7 +350,9 @@ gapminder_diabetes_sort_csv %>%
   myplot()
 ```
 
-![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-10-1.png) It appears arrange does not effect the graph. The countries are still in alphabetical order. I tried it several different ways, but it appears arrange() does not effect the layout of the graph.
+![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-10-1.png) It appears arrange did not effect the graph. The countries are still in alphabetical order. I tried it several different ways, but it appears arrange() does not effect the layout of the graph.
+
+Let's play around with arrange() a bit:
 
 ``` r
 gapminder_diabetes_sort_csv %>% 
@@ -360,7 +364,9 @@ gapminder_diabetes_sort_csv %>%
   myplot()
 ```
 
-![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png) Arrange sorts the data table. So we can pass arrange into head, to select only 10 countries with the lowest diabetes prevalence. Then we can graph these 10 countries. The graph is still sorted alphabetically, but thanks to arrange() the 10 selected countries are the 10 with lowest diabetes rate. So in this way arrange was able to effect the graph. But the point still stands, the order in which the items are displayed on the graph is determined by the levels in the factor country, and arrange cannot override this.
+![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png) Arrange sorts the data table. So we can pass arrange into head, to select only 10 countries with the lowest diabetes prevalence. Then we can graph these 10 countries. The graph is still sorted alphabetically, but thanks to arrange() the 10 selected countries are the 10 with lowest diabetes rate (as opposed to the first 10 alphabetically). So in this way arrange was able to effect the graph.
+
+But the point still stands, the order in which the items are displayed on the graph is determined by the levels in the factor, and arrange cannot override this.
 
 Writing figures to file
 =======================
@@ -387,7 +393,7 @@ ggsave("diabetes_plot2.svg", plot = diabetes_plot)
 
     ## Saving 7 x 5 in image
 
-It appears ggsave automatically saves the most recently made plot. We need to specify the plot name explicitly to make sure it saves the correct plot.
+It appears ggsave automatically saves the most recently made plot. We need to specify the plot name explicitly to make sure it saves the correct plot. To emphasize this point I inserted a random plot into my code.
 
 Now lets load the files to see if the save worked properly:
 
@@ -403,12 +409,17 @@ We can also try saving it as a .jpg:
 ggsave("diabetes_plot3.jpg", 
        plot = diabetes_plot, 
        dpi = 300, 
-       width = 30) 
+       width = 10) 
 ```
 
-    ## Saving 30 x 5 in image
+    ## Saving 10 x 5 in image
 
 **diabetes\_plot3.jpg:** ![Alt text](diabetes_plot3.jpg)
+
+Clean up your repo!
+===================
+
+I have organized my repo, with links to all the assignments in the main readme file. I also deleted extra files.
 
 Reflection
 ==========
@@ -420,3 +431,7 @@ I had never written a function in R before, but after a bit of time on Google I 
 I was also very confused when playing around with arrange(). I thought I was doing something wrong, but it turned out it was working properly from the beginning. It's just that arrange() does not directly effect the display order for items in a plot. I was able to understand this by examining the effect of arrange() on a data table and also when piping into head().
 
 Also kids, don't finish your stats homework mere minutes before it's due. I almost crashed R and deleted the Rproject file, freaked out, but just managed to fix it in time... :thumbsup:
+
+Overall this assignment took me a very long time, but I learned lots of things in the process!
+
+![logo](https://i.imgflip.com/1wj55o.jpg)

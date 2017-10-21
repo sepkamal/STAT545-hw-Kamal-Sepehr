@@ -4,14 +4,7 @@ Hi, this is the repository for my homework assignments for STAT 545 at UBC.
 
 [Click here for the STAT 545 website.](http://www.stat545.com) 
 
-
-
-
-
-See the  file   
-
-
-See the  file [hw04-tidydata.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md)  
+Use the below table to navigate my homework assignments:
 
 **Homework #** | **Like or dislike** |
 --- | --- 
@@ -27,7 +20,7 @@ Enjoy!
 
 ## Welcome to me
 
-My name is Sep, I did my undergrad in biology at UBC and am now doing my masters in genome science and technology, working in a diabetes lab.
+My name is Sep, I did my undergrad in biology at UBC and am now doing my masters in genome science and technology, working in a diabetes lab at the life sciences institute.
 
 I am also an arsenal fan! ~~Though sometimes they drive me crazy~~
 ![alt text][logo]

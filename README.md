@@ -4,14 +4,23 @@ Hi, this is the repository for my homework assignments for STAT 545 at UBC.
 
 [Click here for the STAT 545 website.](http://www.stat545.com) 
 
-[Click here for my hw01_gapminder.md file.](https://github.com/sepkamal/STAT545-hw01-kamal-sepehr/blob/master/hw01_gapminder.md) 
 
-[Click here for my homework02.](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/tree/master/Hw02) 
 
-See the  file [hw03-dplyr-manipulation.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw03/hw03-dplyr-manipulation.md)  
+
+
+See the  file   
 
 
 See the  file [hw04-tidydata.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md)  
+
+**Homework #** | **Like or dislike** |
+--- | --- 
+01 - Edit README.md and Use R Markdown | [hw01_gapminder.md](https://github.com/sepkamal/STAT545-hw01-kamal-sepehr/blob/master/hw01_gapminder.md) 
+02 - Explore Gapminder and use dplyr | [hw02_gapminder_dplyr.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw02/hw02_gapminder_dplyr.md) 
+03 - dplyr to manipulate and explore data | [hw03-dplyr-manipulation.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw03/hw03-dplyr-manipulation.md)
+04 - Tidy data and joins| [hw04-tidydata.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md) 
+05 - Factor and figure management; Repo hygiene | [HW05_factor_figure_management.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw05/HW05_factor_figure_management.md)
+
 
 Enjoy!
 

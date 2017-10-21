@@ -387,9 +387,11 @@ It appears ggsave automatically saves the most recently made plot. We need to sp
 
 Now lets load the files to see if the save worked properly:
 
-**diabetes\_plot:** ![Alt text](diabetes_plot.svg)
+**diabetes\_plot** ![Alt text](diabetes_plot.svg)
 
 **diabetes\_plot2** ![Alt text](diabetes_plot2.svg)
+
+**diabetes\_plot3** ![Alt text](diabetes_plot3.svg)
 
 This confirms what I mentioned above about the imporatance of specifying the plot you would like to save, especially if it is not the most recent plot.
 

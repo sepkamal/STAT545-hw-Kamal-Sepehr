@@ -321,15 +321,23 @@ gapminder_diabetes_sort %>%
   myplot()
 ```
 
-![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-8-1.png) Venezuela showed up as blank because the country's name in the diabetes data table was slightly different than in gapminder, and so it's value is listed as NA. Therefore I filtered it out from the graph.
+![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-8-1.png)
 
-We can see above that the countries are sorted from highest to lowest prevalence. This is helpful to convey the information, as mentioned by Tamara Munzner.
+Venezuela showed up as blank because the country's name in the diabetes data table was slightly different than in gapminder, and so it's value is listed as NA. Therefore I filtered it out from the graph.
 
-I used a color scheme from veridis to give an accurate visual representation of the difference in gdpPercap between countries. There may be a slight trend, with higher gdpPercap countries having higher incidence of diabetes, but this would require further statistical analysis. Canada and the US clearly stand out as having much higher gdpPercap than the rest.
+Mexico had the highest prevalence of diabetes, and Argentina had the lowest.
 
-Also from the graph we can see Mexico had the highest prevalence of diabetes, and Argentina had the lowest. Canada was towards the low end.
+**From Tamara Munzner:**
+
+-   We can see above that the countries are sorted from highest to lowest prevalence. This is helpful to convey the information.
+
+-   I used a color scheme from veridis to give an accurate visual representation of the difference in gdpPercap between countries.
+
+There may be a slight trend, with higher gdpPercap countries having higher incidence of diabetes, but this would require further statistical analysis. Canada and the US clearly stand out as having much higher gdpPercap than the rest.
 
 As I want to show this plot multiple times (with slightly different inputs) I saved the plot settings to a function. I will call upon this function again below.
+
+### Explore the effects of reordering a factor
 
 Now lets make the same plot using the data table read from the csv file. I expect the countries to be sorted alphabetically this time:
 
@@ -342,6 +350,8 @@ gapminder_diabetes_sort_csv %>%
 
 As I expected it is sorted alphabetically as the factor level order was lost.
 
+### Factor reordering coupled with arrange()
+
 Now lets take the .csv version again, and lets arrange() by diabetes prevalence.
 
 ``` r
@@ -350,7 +360,9 @@ gapminder_diabetes_sort_csv %>%
   myplot()
 ```
 
-![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-10-1.png) It appears arrange did not effect the graph. The countries are still in alphabetical order. I tried it several different ways, but it appears arrange() does not effect the layout of the graph.
+![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-10-1.png)
+
+It appears arrange did not effect the graph. The countries are still in alphabetical order. I tried it several different ways, but it appears arrange() does not effect the layout of the graph.
 
 Let's play around with arrange() a bit:
 
@@ -364,7 +376,9 @@ gapminder_diabetes_sort_csv %>%
   myplot()
 ```
 
-![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png) Arrange sorts the data table. So we can pass arrange into head, to select only 10 countries with the lowest diabetes prevalence. Then we can graph these 10 countries. The graph is still sorted alphabetically, but thanks to arrange() the 10 selected countries are the 10 with lowest diabetes rate (as opposed to the first 10 alphabetically). So in this way arrange was able to effect the graph.
+![](HW05_factor_figure_management_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-11-1.png)
+
+Arrange sorts the data table. So we can pass arrange into head, to select only 10 countries with the lowest diabetes prevalence. Then we can graph these 10 countries. The graph is still sorted alphabetically, but thanks to arrange() the 10 selected countries are the 10 with lowest diabetes rate (as opposed to the first 10 alphabetically). So in this way arrange was able to effect the graph.
 
 But the point still stands, the order in which the items are displayed on the graph is determined by the levels in the factor, and arrange cannot override this.
 

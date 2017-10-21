@@ -1,4 +1,4 @@
-# STAT545-hw01-kamal-sepehr
+# STAT545-hw-kamal-sepehr
 
 Hi, this is the repository for my homework assignments for STAT 545 at UBC.
 

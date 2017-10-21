@@ -8,7 +8,7 @@ Use the below table to navigate my homework assignments:
 
 **Homework #** | **Like or dislike** |
 --- | --- 
-01 - Edit README.md and Use R Markdown | [hw01_gapminder.md](https://github.com/sepkamal/STAT545-hw01-kamal-sepehr/blob/master/hw01_gapminder.md) 
+01 - Edit README.md and Use R Markdown | [hw01_gapminder.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw01/hw01_gapminder.md) 
 02 - Explore Gapminder and use dplyr | [hw02_gapminder_dplyr.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw02/hw02_gapminder_dplyr.md) 
 03 - dplyr to manipulate and explore data | [hw03-dplyr-manipulation.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw03/hw03-dplyr-manipulation.md)
 04 - Tidy data and joins| [hw04-tidydata.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md) 

@@ -159,14 +159,17 @@ myplot <- function(my_data_table) {
   ggplot(aes(x = country, y = Diabetes_prevalance_2015)) +
   geom_col(aes(fill = country)) +
   ggtitle("Diabetes Prevalence in the Americas (2015)") +
-  labs(y = "Prevalance (%)", x = "Country") +
+  labs(y = "Prevalance (%)", 
+       x = "Country",
+        caption = "data modifed from gapminder & the International Diabetes Federation") +
   theme(axis.text.x=element_text(angle=45,hjust=1)) +
   theme(axis.title = element_text(size=14),
         plot.title = element_text(hjust = 0.5, size=18),
         axis.text.x = element_text(size=10),
         axis.text.y = element_text(size=12)) +
   scale_fill_manual(values = gapminder::country_colors) +
-  theme(legend.position="none")  ### remove the legend
+  theme(legend.position="none") ### remove the legend 
+    
 }  
 
 gapminder_diabetes_sort %>% 
@@ -230,7 +233,7 @@ ggplot(aes(x = country, y = lifeExp)) +
 
 ggsave("diabetes_plot.svg") 
 ggsave("diabetes_plot2.svg", plot = diabetes_plot)
-ggsave("diabetes_plot3.svg", plot = diabetes_plot, height = 5) 
+
 
 ```
 It appears ggsave automatically saves the most recently made plot. We need to specify the plot name explicitly to make sure it saves the correct plot.
@@ -244,8 +247,17 @@ Now lets load the files to see if the save worked properly:
 **diabetes_plot2**
 ![Alt text](diabetes_plot2.svg)
 
+We can also try saving it as a .jpg:
+
+```{r}
+ggsave("diabetes_plot3.jpg", plot = diabetes_plot, dpi = 300) 
+
+```
+
+
+
 **diabetes_plot3**
-![Alt text](diabetes_plot3.svg)
+![Alt text](diabetes_plot3.jpg)
 
 This confirms what I mentioned above about the imporatance of specifying the plot you would like to save, especially if it is not the most recent plot.
 

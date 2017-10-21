@@ -299,14 +299,17 @@ myplot <- function(my_data_table) {
   ggplot(aes(x = country, y = Diabetes_prevalance_2015)) +
   geom_col(aes(fill = country)) +
   ggtitle("Diabetes Prevalence in the Americas (2015)") +
-  labs(y = "Prevalance (%)", x = "Country") +
+  labs(y = "Prevalance (%)", 
+       x = "Country",
+        caption = "data modifed from gapminder & the International Diabetes Federation") +
   theme(axis.text.x=element_text(angle=45,hjust=1)) +
   theme(axis.title = element_text(size=14),
         plot.title = element_text(hjust = 0.5, size=18),
         axis.text.x = element_text(size=10),
         axis.text.y = element_text(size=12)) +
   scale_fill_manual(values = gapminder::country_colors) +
-  theme(legend.position="none")  ### remove the legend
+  theme(legend.position="none") ### remove the legend 
+    
 }  
 
 gapminder_diabetes_sort %>% 
@@ -377,12 +380,6 @@ ggsave("diabetes_plot2.svg", plot = diabetes_plot)
 
     ## Saving 7 x 5 in image
 
-``` r
-ggsave("diabetes_plot3.svg", plot = diabetes_plot, height = 5) 
-```
-
-    ## Saving 7 x 5 in image
-
 It appears ggsave automatically saves the most recently made plot. We need to specify the plot name explicitly to make sure it saves the correct plot.
 
 Now lets load the files to see if the save worked properly:
@@ -391,7 +388,15 @@ Now lets load the files to see if the save worked properly:
 
 **diabetes\_plot2** ![Alt text](diabetes_plot2.svg)
 
-**diabetes\_plot3** ![Alt text](diabetes_plot3.svg)
+We can also try saving it as a .jpg:
+
+``` r
+ggsave("diabetes_plot3.jpg", plot = diabetes_plot, dpi = 300) 
+```
+
+    ## Saving 7 x 5 in image
+
+**diabetes\_plot3** ![Alt text](diabetes_plot3.jpg)
 
 This confirms what I mentioned above about the imporatance of specifying the plot you would like to save, especially if it is not the most recent plot.
 
@@ -403,3 +408,5 @@ I found [this page](http://stat545.com/block029_factors.html) from class quite h
 I had never written a function in R before, but after a bit of time on google I manged to figure it out. At first I tried to save the graph as an object, but that didn't work (don't think it's possible to do this). Then I thought a function might work. It was super helpful because I didn't want to copy and paste a massive block of code over and over. I found [this page](https://www.statmethods.net/management/userfunctions.html) helpful for how to write a function.
 
 I was also very confused when playing around with arrange(). I thought I was doing something wrong, but it turned out it was working properly from the beginning. It's just that arrange() does not directly effect the display order for items in a plot. I was able to understand this by examining the effect of arrange() on a datatable and also when piping into head().
+
+Also kids, don't finsih your stats homowork mere minutes before it's due. I almost crashed R and deleted the my Rproject, freaked out, but just mangaged to fix it in time... :thumbsup:

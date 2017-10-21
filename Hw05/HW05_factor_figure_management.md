@@ -430,6 +430,8 @@ ggsave("diabetes_plot3.jpg",
 
 **diabetes\_plot3.jpg:** ![Alt text](diabetes_plot3.jpg)
 
+We can see that the aspect ratio of the figure has changed, as I specified a width.
+
 Clean up your repo!
 ===================
 

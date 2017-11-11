@@ -315,7 +315,7 @@ possibly_func <- possibly(~ revgeocode(c(.x, .y), output = "more") , NA_characte
 locations_1sthalf <- singer_locations %>% 
   filter(!is.na(longitude) & !is.na(latitude)) %>% ## remove entries without longitute and latitude
 	head(2500) %>% ### just the first 2500 rows (revgeocode's limit)
-	mutate(locs = map2(longitude, latitude, possib_func))
+	mutate(locs = map2(longitude, latitude, possibly_func))
 
 
 # store number of rows in filtered dataset
@@ -326,7 +326,7 @@ singer_filtered_rows <- singer_locations %>%
 locations_2ndhalf <- singer_locations %>% 
   filter(!is.na(longitude) & !is.na(latitude)) %>% 
 	tail(nrow(singer_filtered_rows) - 2500) %>% ### just the remaining rows
-	mutate(locs = map2(longitude, latitude, possib_func))
+	mutate(locs = map2(longitude, latitude, possibly_func))
 
 
 # merge the two data tables
@@ -342,6 +342,7 @@ locations_combined %>%
 locations_combined[["locs"]] %>% 
   head(1) %>% 
 	knitr::kable()
+
   
 ```
 
@@ -355,7 +356,6 @@ We now have a nested data frame. We can use the "locality column" in the locs da
 **2. Try to check wether the place in city corresponds to the information you retrieved:**
 
 ```{r}
-View(locations_combined[["locs"]])
 
 locations_combined %>% 
 	mutate(match = .$city)
@@ -370,18 +370,18 @@ locations_combined[["locs"]] %>%
 
     
 
-locations_combined[["locs"]] %>%
-	head(10) %>%
-	mutate(locality_unnested =  map("locality") %>%
-				 	        lapply(as.character) %>%
-	                unlist())
+#locations_combined[["locs"]] %>%
+#	head(10) %>%
+#	mutate(locality_unnested =  map("locality") %>%
+#				 	        lapply(as.character) %>%
+#	                unlist())
 
 
 ### Didn't get to run this code because the above failed
-locations_combined %>%
-	head(5) %>% 
-	lapply(, str_to_lower)
-	mutate(match = as.lower(city))
+#locations_combined %>%
+#	head(5) %>% 
+#	lapply(, str_to_lower)
+#	mutate(match = as.lower(city))
 	
 ```	
 I struggled a lot here. I did figured out the problem, the output from map is a factor as opposed to a character. Attempts to use `as.character()` failed at first, until I used it with `lapply()`.
@@ -394,18 +394,16 @@ We learned about this problem in [class a few lectures ago](http://stat545.com/b
 
 ```{r}
 
-
 locations_map <- locations_combined %>%  
-	filter()
   leaflet()  %>%   
   addTiles() %>%  
   addCircles(popup = ~artist_name)
 
-htmlwidgets::saveWidget(locations_map, file="locations_map.html")
+htmlwidgets::saveWidget(locations_map, "locations_map.html")
 
-singer_map.html
+
 
 ```
 
 
-
+![logo](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw06/locations_map_pic.PNG)

@@ -7,5 +7,5 @@ See the  file [HW6_Data_wrangling_wrap_up.md](https://github.com/sepkamal/STAT54
 
 # Reflection
 
-I think I could have spent forever working on this assignment. Just had to stop at some point. My code blcok with revgeocode ran fine in RStudio, but started acting up during knitting. Unfortunately this made my assignment a bit of a mess :(
+I think I could have spent forever working on this assignment. Just had to stop at some point. My code block with revgeocode ran fine in RStudio, but started acting up during knitting. Unfortunately this made my assignment a bit of a mess :(
 

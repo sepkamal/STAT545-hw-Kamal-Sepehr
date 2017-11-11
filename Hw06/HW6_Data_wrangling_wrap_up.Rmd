@@ -307,6 +307,7 @@ stri_count_words("ONE TWO THREE FOUR")
 # 4. Work with the singer data
 
 **1. Use purrr to map latitude and longitude into human readable information **
+
 ```{r}
 # revgeocode function
 possibly_func <- possibly(~ revgeocode(c(.x, .y), output = "more") , NA_character_, quiet = TRUE)
@@ -335,13 +336,11 @@ locations_combined <- rbind.data.frame(locations_1sthalf, locations_2ndhalf)
 # take a peek
 # shows we have a nested dataframe
 locations_combined %>% 
-  head() %>% 
-	knitr::kable()
+  head()
 
 # shows the format of the locs data frame
 locations_combined[["locs"]] %>% 
-  head(1) %>% 
-	knitr::kable()
+  head(1)
 
   
 ```

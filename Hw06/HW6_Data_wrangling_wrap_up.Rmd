@@ -1,0 +1,411 @@
+---
+title: "HW6 - Data wrangling wrap up"
+output: github_document
+---
+
+
+
+```{r}
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(leaflet))
+suppressPackageStartupMessages(library(singer))
+suppressPackageStartupMessages(library(purrr))
+suppressPackageStartupMessages(library(ggmap))
+suppressPackageStartupMessages(library(stringi))
+
+```
+# 1. Character Data
+
+Read and work the exercises in the [Strings chapter](http://r4ds.had.co.nz/strings.html) of R for Data Science:
+
+
+### 14.2.5 Exercises
+
+**1. In code that doesn’t use stringr, you’ll often see paste() and paste0(). What’s the difference between the two functions? What stringr function are they equivalent to? How do the functions differ in their handling of NA?**
+
+They are both used to join strings together. The difference is in the seperator. In `paste()` you can specify the seperator, for example with `sep = ", "`. It defaults to `sep = " "`.
+
+```{r}
+
+paste("I love coding", "SO MUCH", "it's true")
+
+paste0("I love coding", "SO MUCH", "it's true")
+
+```
+
+`str_c()` is  similar to `paste0`.
+
+```{r}
+str_c("I love coding", "SO MUCH", "it's true")
+```
+
+`paste()` converts `NA` to `"NA"`, while `str_c` just returns `NA` and no string.
+
+```{r}
+str_c("I love coding", "SO MUCH", NA)
+
+paste("I love coding", "SO MUCH", NA)
+```
+
+**2. In your own words, describe the difference between the sep and collapse arguments to str_c()**
+
+```{r}
+str_c("I love coding", "SO MUCH", "it's true", sep = "-")
+
+str_c("I love coding", "SO MUCH", "it's true", collapse = "-")
+
+
+
+```
+`sep` is used to seperate the individual strings, while collapse is used to collapse the individual strings into a single string.
+
+
+### 14.3.1.1 Exercises
+
+**1. Explain why each of these strings don’t match a \: "\", "\\", "\\\".**
+
+`\` is a special symbol, known as the escape symbol. It is used before another symbol as an indicator so that R knows the symbol following `\` is supposed to be displayed as a string.
+
+```{r}
+str_c("I love coding", "\\", "SO MUCH")
+
+str_c("I love coding", "\\", "SO MUCH") %>% 
+  writeLines()
+
+str_c("I love coding", "\"", "SO MUCH") %>% 
+	writeLines()
+
+```
+**2. How would you match the sequence "'\?**
+
+Just need to use a few escapes.`?` didn't need one as it is not a special symbol.
+
+```{r}
+str_c("\"\'\\?") %>% 
+	writeLines()
+
+```
+
+### 14.3.2.1 Exercises
+
+**1. How would you match the literal string "$^$"?**
+
+```{r}
+str_c("\"$^$\"") %>% 
+	writeLines()
+
+
+```
+** 2. Given the corpus of common words in stringr::words, create regular expressions that find all words that:**
+
+**Start with “y”.**
+
+```{r}
+str_subset(words, "^y")
+
+```
+
+**End with “x**
+
+```{r}
+str_subset(words, "x$")
+```
+
+**Are exactly three letters long. (Don’t cheat by using str_length()!)**
+
+```{r}
+str_subset(words, "^...$") %>% 
+	head(10)
+
+```
+
+**Have seven letters or more.**
+
+```{r}
+str_subset(words, "^.......") %>% 
+	head(10)
+
+```
+
+
+### 14.3.3.1 Exercises
+
+**1. Create regular expressions to find all words that:**
+
+**Start with a vowel.**
+
+counting y as a vowel :thumbsup:
+```{r}
+str_subset(words, "^[aeiouy]") %>% 
+	head(10)
+```
+
+
+**That only contain consonants. (Hint: thinking about matching “not”-vowels.)**
+
+Need to put a `^` inside it too.
+
+```{r}
+str_subset(words, "^[^aeiouy]") %>% 
+	head(10)
+```
+
+This didn't quite work, as it only made sure they don't start with that letter.
+
+**End with ed, but not with eed.**
+
+```{r}
+str_subset(words, "[^e]ed$") %>% 
+	head(10)
+
+
+```
+
+
+**End with ing or ise.**
+```{r}
+ing <- str_subset(words, "ing$")
+ise <- str_subset(words, "ise$")
+c(ing, ise)
+
+
+```
+
+** 3. Is “q” always followed by a “u”?**
+```{r}
+str_subset(words, "q") %>% 
+	length()
+
+str_subset(words, "qu") %>% 
+	length()
+
+
+```
+
+Yes, it is always followed by a `u` in `words`.
+
+
+### 14.3.5.1 Exercises
+
+**Describe, in words, what these expressions will match:**
+
+`(.)\1\1`
+
+A string containing 3 of the same characters in a row. For example `aaad`.
+
+`"(.)(.)\\2\\1"`
+
+A string containing a 2 character flipped repeat. For example `adda`.
+
+
+`(..)\1`
+
+This is similar to the previous one, except here it is not flipped. For example `adad`.
+
+`"(.).\\1.\\1"`
+
+Finds two non identical characters, followed the first one again, then a 3rd wildcard, and then the first one a third time. 
+```{r}
+str_subset("adaca", "(.).\\1.\\1")
+```
+
+`"(.)(.)(.).*\\3\\2\\1"`
+
+Finds 3 wildcard characters, followed by something in the middle, and then the same 3 wildcards again in reverse order.
+
+```{r}
+str_subset("abcFFFFFcba", "(.)(.)(.).*\\3\\2\\1")
+
+```
+
+
+### 14.4.2 Exercises
+
+**2. What word has the highest number of vowels? What word has the highest proportion of vowels? (Hint: what is the denominator?)**
+
+```{r}
+str_count(words, "[aeiouy]") %>% 
+	sort() %>% 
+	tail(1)
+
+### the most any of them has is 5
+
+words[str_count(words, "[aeiouy]") == 5]
+```
+
+### 14.4.5.1 Exercises
+
+**Replace all forward slashes in a string with backslashes.**
+
+
+```{r}
+str_replace_all("AAA/BBB", "/", "\\\\") %>% 
+	writeLines()
+
+```
+
+**Implement a simple version of str_to_lower() using replace_all().**
+
+```{r}
+str_replace_all(sentences, ".", tolower) %>%
+  head(5)
+
+```
+
+
+### 14.4.6.1 Exercises
+
+**Split up a string like "apples, pears, and bananas" into individual components.**
+
+```{r}
+str_split("apples, pears, and bananas", boundary("word") )
+```
+
+**Why is it better to split up by boundary("word") than " "?**
+
+```{r}
+str_split("apples, pears, and bananas", pattern = " " )
+
+
+```
+
+Because using pattern can lead to problems depending on how the words are separated. For examples with commas, as we see above.
+
+### 14.5.1 Exercises
+
+**What are the five most common words in sentences?**
+
+
+```{r}
+sentences %>% 
+	str_split(boundary("word")) %>% 
+  unlist() %>% 
+	str_to_lower() %>% 
+	enframe() %>%
+	group_by(value) %>% 
+	count() %>% 
+  arrange(desc(n)) %>% 
+	head(5)
+
+
+```
+
+
+### 14.7.1 Exercises
+
+**1. Find the stringi functions that:?**
+
+**1. Count the number of words.**
+
+```{r}
+stri_count_words("ONE TWO THREE FOUR")
+
+```
+
+
+# 4. Work with the singer data
+
+**1. Use purrr to map latitude and longitude into human readable information **
+```{r}
+# revgeocode function
+possibly_func <- possibly(~ revgeocode(c(.x, .y), output = "more") , NA_character_, quiet = TRUE)
+
+# compute first 2500 rows of singer_locations
+locations_1sthalf <- singer_locations %>% 
+  filter(!is.na(longitude) & !is.na(latitude)) %>% ## remove entries without longitute and latitude
+	head(2500) %>% ### just the first 2500 rows (revgeocode's limit)
+	mutate(locs = map2(longitude, latitude, possib_func))
+
+
+# store number of rows in filtered dataset
+singer_filtered_rows <- singer_locations %>% 
+  filter(!is.na(longitude) & !is.na(latitude))
+
+# compute the rest of singer_locations
+locations_2ndhalf <- singer_locations %>% 
+  filter(!is.na(longitude) & !is.na(latitude)) %>% 
+	tail(nrow(singer_filtered_rows) - 2500) %>% ### just the remaining rows
+	mutate(locs = map2(longitude, latitude, possib_func))
+
+
+# merge the two data tables
+locations_combined <- rbind.data.frame(locations_1sthalf, locations_2ndhalf)
+
+# take a peek
+# shows we have a nested dataframe
+locations_combined %>% 
+  head() %>% 
+	knitr::kable()
+
+# shows the format of the locs data frame
+locations_combined[["locs"]] %>% 
+  head(1) %>% 
+	knitr::kable()
+  
+```
+
+
+This code above took a lot of time to figure out. In the end we are using both the `map2` function and `possibly` (we call on `possibly` from within `map2`). `Possibly` is used here because some of the longtitude/latitude combinations fail to obtain a match and throw an error in which interferes with `revgeocode`. 
+
+It seems the Google Maps API limits to 2500 queries a day. As we have around 4000 rows, let's run just the first 2500 rows, and then the rest seperately. 
+
+We now have a nested data frame. We can use the "locality column" in the locs dataframe and compare it to the "dirty" variable city.
+
+**2. Try to check wether the place in city corresponds to the information you retrieved:**
+
+```{r}
+View(locations_combined[["locs"]])
+
+locations_combined %>% 
+	mutate(match = .$city)
+
+
+locations_combined[["locs"]] %>%
+		head(10) %>%
+    map("locality") %>% 
+	 	lapply(as.character) %>% ## convert factor to list
+	  unlist() %>%  ## convert list to character
+	  str() ## shows the output format
+
+    
+
+locations_combined[["locs"]] %>%
+	head(10) %>%
+	mutate(locality_unnested =  map("locality") %>%
+				 	        lapply(as.character) %>%
+	                unlist())
+
+
+### Didn't get to run this code because the above failed
+locations_combined %>%
+	head(5) %>% 
+	lapply(, str_to_lower)
+	mutate(match = as.lower(city))
+	
+```	
+I struggled a lot here. I did figured out the problem, the output from map is a factor as opposed to a character. Attempts to use `as.character()` failed at first, until I used it with `lapply()`.
+
+We learned about this problem in [class a few lectures ago](http://stat545.com/block029_factors.html) (described as the **stealth factor!**)
+
+
+
+**3. If you still have time, you can go visual: give a look to the library leaflet and plot some information about the bands:**
+
+```{r}
+
+
+locations_map <- locations_combined %>%  
+	filter()
+  leaflet()  %>%   
+  addTiles() %>%  
+  addCircles(popup = ~artist_name)
+
+htmlwidgets::saveWidget(locations_map, file="locations_map.html")
+
+singer_map.html
+
+```
+
+
+

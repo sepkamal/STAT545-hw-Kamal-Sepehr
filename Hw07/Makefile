@@ -19,6 +19,9 @@ datatables/BMI_data.tsv datatables/BMI_gapminder_2007.tsv: BMI_data_wrangling.R 
 	Rscript $<
 	
 	
+	
+	
+	
 plots/BMI_plot_canada.jpeg: BMI_plotting.R datatables/BMI_data.tsv
 	Rscript $<
 														

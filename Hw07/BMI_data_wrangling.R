@@ -41,9 +41,6 @@ BMI_data <- rbind.data.frame(BMI_male, BMI_female) %>%
 
 write_tsv(BMI_data, "datatables/BMI_data.tsv")
 
-head(BMI_data)
-
-
 
 
 # load main gapminder data & select just data from 2007
@@ -59,7 +56,7 @@ BMI_data_2007 <- BMI_data %>%
 BMI_gapminder_2007 <- inner_join(gapminder_2007, BMI_data_2007, by = "country")
 
 # save the data table
-write_tsv(BMI_gapminder, "datatables/BMI_gapminder_2007.tsv")
+write_tsv(BMI_gapminder_2007, "datatables/BMI_gapminder_2007.tsv")
 	
 
 

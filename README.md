@@ -13,7 +13,8 @@ Use the below table to navigate my homework assignments:
 03 - dplyr to manipulate and explore data | [hw03-dplyr-manipulation.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw03/hw03-dplyr-manipulation.md)
 04 - Tidy data and joins| [hw04-tidydata.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md) 
 05 - Factor and figure management; Repo hygiene | [HW05_factor_figure_management.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw05/HW05_factor_figure_management.md)
-
+06 - Data wrangling wrap up | [HW6_Data_wrangling_wrap_up.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw06/HW6_Data_wrangling_wrap_up.md)
+07 - Automating Data-analysis Pipelines | [Hw07_Automating Data-analysis Pipelines.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw07/Hw07_Automating%20Data-analysis%20Pipelines.md)
 
 Enjoy!
 

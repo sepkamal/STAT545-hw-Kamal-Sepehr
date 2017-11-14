@@ -10,7 +10,7 @@ Here are the 3 scripts, in the order in which they are run:
  - [BMI_statistical_analysis.R](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw07/BMI_statistical_analysis.R)
  - [BMI_plotting.R](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw07/BMI_plotting.R)
  
- And the `Makefile` that runs the scripts and renders the .md file:
+ And the `Makefile` that downloads the data, runs the scripts, and renders the .md file:
  - [Makefile](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw07/Makefile)
 
 # Reflection

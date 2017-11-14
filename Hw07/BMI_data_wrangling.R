@@ -7,40 +7,28 @@ suppressPackageStartupMessages(library(reshape2))
 # load male data
 BMI_male <- readRDS("datatables/BMI_male.rds") 
 
-# display initial format
-BMI_male %>% 
-	head()
-
 # tidy data using reshape2
 BMI_male <- BMI_male %>% 
 	mutate(sex = "male") %>% # so we can distinguish male and female after joining the dataframes
 	melt() # rshape columns into rows 
 
-# load female data and tidy
+# load female data and tidy it
 BMI_female <- readRDS("datatables/BMI_female.rds")%>% 
 	mutate(sex = "female") %>% 
 	melt()
-
-
-str(BMI_female)
-
-str(BMI_male)
-
-## confirms the two dataframes are identical in size and format
 
 # merge the male and female dataframes
 # I had some trouble renaming the columns,
 # so I found it easier to make new columns and then drop the old ones
 
 BMI_data <- rbind.data.frame(BMI_male, BMI_female) %>% 
-	mutate(country = Country, 
+	mutate(country = Country, # main gapminder dataset is lowercase
 				 sex = sex, 
 				 year = variable, 
 				 BMI = value) %>% 
 	select(country, sex, year, BMI)
 
 write_tsv(BMI_data, "datatables/BMI_data.tsv")
-
 
 
 # load main gapminder data & select just data from 2007

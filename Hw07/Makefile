@@ -2,9 +2,10 @@ all: Hw07_automating_data_analysis_pipelines.md
 
 # delete old datatables and plots
 clean:
+	Rscript -e 'setwd(setwd("~/UBC/STAT 545/STAT545-hw-Kamal-Sepehr/Hw07"))' # set working directory
 	rm -f datatables/*.rds datatables/*.tsv
 	rm -f plots/*.jpeg
-	rm -f *.md
+	rm -f Hw07_automating_data_analysis_pipelines.md
 
 # download gapminder male BMI data from google sheet using gsheet
 datatables/BMI_male.rds:

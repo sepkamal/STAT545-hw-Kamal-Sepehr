@@ -55,7 +55,7 @@ Next I combined the BMI data with the rest of the gapminder data. Here is a samp
 
 ```{r}
 suppressMessages(knitr::kable(read_tsv("datatables/BMI_gapminder_2007.tsv")
-															%>% head(10)))
+															%>% head(5)))
 ```
 
 I wanted to look at each continent seperately. Here we can see some summary statistics.

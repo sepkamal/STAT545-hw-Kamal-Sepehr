@@ -32,8 +32,6 @@ ggsave(filename = "plots/BMI_plot_canada.jpeg",
 			 height = 4)
 
 
-
-
 # load BMI gapminder 2007 data
 BMI_gapminder_2007 <- read_tsv("datatables/BMI_gapminder_2007.tsv")
 

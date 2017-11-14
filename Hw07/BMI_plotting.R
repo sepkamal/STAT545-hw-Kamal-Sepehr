@@ -17,7 +17,12 @@ BMI_plot <- BMI_data %>%
 				axis.text.x = element_text(size=12),
 				axis.text.y = element_text(size=12))
 
-ggsave(filename = "plots/BMI_plot_canada.jpeg", plot = BMI_plot, device = "jpeg", width = 8, height = 4)
+# save the canada BMI plot
+ggsave(filename = "plots/BMI_plot_canada.jpeg", 
+			 plot = BMI_plot, 
+			 device = "jpeg", 
+			 width = 8, 
+			 height = 4)
 
 
 # load BMI gapminder 2007 data
@@ -35,7 +40,31 @@ BMI_gapminder_2007 %>%
 	geom_point() +
 	geom_smooth(method = "log", se = FALSE)
 
-BMI_gapminder_2007 %>% 
-	ggplot(aes(BMI)) +
-	geom_histogram()
+# make histogram of BMI in 2007
+BMI_histogram <- BMI_gapminder_2007 %>% 
+	ggplot(aes(BMI, fill = sex)) +
+	facet_wrap(~ sex) +
+	geom_histogram(bins = 25) +
+	geom_vline(aes(xintercept = mean(BMI)), 
+								 colour = 1, 
+								 size = 3) +
+	theme(legend.position = "none") +
+	theme(axis.title = element_text(size=14),
+				plot.title = element_text(hjust = 0.5, size=18),
+				axis.text.x = element_text(size=12),
+				axis.text.y = element_text(size=12),
+				strip.text = element_text(size = 12)) +
+	ggtitle("Distribution of BMI by Country")
+
+	
+# save the histogram
+ggsave(filename = "plots/BMI_histogram.jpeg", 
+			 plot = BMI_histogram, 
+			 device = "jpeg", 
+			 width = 8, 
+			 height = 4)
+
+
+
+
 

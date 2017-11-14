@@ -14,3 +14,5 @@ head(BMI_data)
 
 ```
 
+
+There was not enough data for Oceania, so I removed it from the analysis.

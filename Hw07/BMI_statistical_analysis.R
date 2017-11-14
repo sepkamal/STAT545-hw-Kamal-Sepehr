@@ -4,38 +4,37 @@ suppressPackageStartupMessages(library(broom))
 # load BMI gapminder 2007 data
 BMI_gapminder_2007 <- read_tsv("datatables/BMI_gapminder_2007.tsv")
 
-BMI_gapminder_2007
-
+# summary statistics by continent
+summary_data <- BMI_gapminder_2007 %>%
+	filter(continent != "Oceania") %>% 
+	group_by(continent, sex) %>%
+	summarise(mean_BMI = mean(BMI), 
+						median_BMI = median(BMI),
+						min_BMI = min(BMI),
+						max_BMI = max(BMI))
 
 # for each continent look at relationship between BMI and gdpPercap in 2007
-linear_model_func <- function(continent_choose){
-	BMI_gapminder_2007 %>% 
-		filter(continent == continent_choose) %>% 
-	  lm(BMI ~ log10(gdpPercap), BMI_gapminder_2007)
-
-}
-
-summary_data <- BMI_gapminder_2007 %>% 
-	filter(sex == "male") %>% 
-	group_by(continent) %>%
-	summarise(mean_BMI = mean(BMI), 
-						median_BMI = median(BMI))
-
 fitted_models = BMI_gapminder_2007 %>%
+	filter(continent != "Oceania") %>% 
 	group_by(continent, sex) %>% 
 	do(model = lm(BMI ~ log10(gdpPercap), data = .))
-
-linear_model_tidy <- tidy(linear_model)
-
-fitted_models %>% tidy(model)
-
-View(fitted_models)
+	#tidy(model)
 
 
-# make histogram of BMI in 2007
-BMI_gapminder_2007 %>% 
-	
-	
+View(fitted_models$model)
 
-# for each country fit linear model of change in BMI over time
-BMI_data
+
+
+
+
+
+
+# find countries with large difference in male and female BMI
+BMI_sex_differences <- BMI_gapminder_2007 %>% 
+	select(country, sex, BMI) %>% 
+	spread(sex, BMI) %>% 
+	mutate(BMI_sex_difference = male - female) %>%
+	arrange(desc(BMI_sex_difference))
+
+# save the table
+write_tsv(BMI_sex_differences, "datatables/BMI_sex_differences.tsv")

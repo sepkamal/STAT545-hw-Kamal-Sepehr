@@ -61,4 +61,3 @@ write_tsv(BMI_gapminder_2007, "datatables/BMI_gapminder_2007.tsv")
 
 
 
-

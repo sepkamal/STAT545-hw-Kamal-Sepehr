@@ -1,4 +1,3 @@
-
 all: plots/BMI_plot_canada.jpeg
 
 clean:
@@ -18,7 +17,10 @@ datatables/gapminder_data.tsv:
 datatables/BMI_data.tsv datatables/BMI_gapminder_2007.tsv: BMI_data_wrangling.R datatables/BMI_male.rds datatables/BMI_female.rds datatables/gapminder_data.tsv
 	Rscript $<
 
-plots/BMI_plot_canada.jpeg: BMI_plotting.R datatables/BMI_data.tsv
+datatables/BMI_sex_differences.tsv: BMI_statistical_analysis.R datatables/BMI_gapminder_2007.tsv
+	Rscript $<
+
+plots/BMI_plot_canada.jpeg: BMI_plotting.R datatables/BMI_data.tsv datatables/BMI_gapminder_2007.tsv datatables/BMI_sex_differences.tsv
 	Rscript $<
 														
 									

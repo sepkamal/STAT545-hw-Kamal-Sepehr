@@ -5,19 +5,37 @@ The overall aim of this assignment is to **look for trends in the gapminder data
 
 The BMI data is provided as a google sheet, so downloading it was a bit tricky. Luckily there is a package `gsheet` which helps download google sheets in R. The BMI data was provided seperately for males and females, so I downloaded both files.
 
-There was not enough data for Oceania, so I removed it from the analysis.
-
-![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_plot_canada.jpeg)
-
-This plot shows the trend in BMI in Canada from 1980 to 2008. Male BMI is consistently higher than female BMI, and both trend upwards in a somewhat linear fashion. It would be very interesting to see how this has changed more recently (between 2008 and 2017).
-
-I was curious how 'normal' this difference in BMI between males and females is. This table shows us the top 5 countries with the largest BMI difference between males and females.
+Here is a sample of the BMI data from the google sheet(after a bit of reformatting):
 
 ``` r
 suppressMessages(library(tidyverse))
 ```
 
     ## Warning: package 'tidyverse' was built under R version 3.4.2
+
+``` r
+suppressMessages(knitr::kable(read_tsv("datatables/BMI_data.tsv.")
+                                                            %>% head(10)))
+```
+
+| country             | sex  |  year|       BMI|
+|:--------------------|:-----|-----:|---------:|
+| Afghanistan         | male |  1980|  21.48678|
+| Albania             | male |  1980|  25.22533|
+| Algeria             | male |  1980|  22.25703|
+| Andorra             | male |  1980|  25.66652|
+| Angola              | male |  1980|  20.94876|
+| Antigua and Barbuda | male |  1980|  23.31424|
+| Argentina           | male |  1980|  25.37913|
+| Armenia             | male |  1980|  23.82469|
+| Australia           | male |  1980|  24.92729|
+| Austria             | male |  1980|  24.84097|
+
+![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_plot_canada.jpeg)
+
+This plot shows the trend in BMI in Canada from 1980 to 2008. Male BMI is consistently higher than female BMI, and both trend upwards in a somewhat linear fashion. It would be very interesting to see how this has changed more recently (between 2008 and 2017).
+
+I was curious how 'normal' this difference in BMI between males and females is. This table shows us the top 5 countries with the largest BMI difference between males and females.
 
 ``` r
 suppressMessages(knitr::kable(caption = "Countries with largest BMI difference between males and females",
@@ -33,13 +51,77 @@ suppressMessages(knitr::kable(caption = "Countries with largest BMI difference b
 | Belgium     |  25.14489|  26.67529|               1.53040|
 | Germany     |  25.70588|  27.09050|               1.38462|
 
-The difference for Canada was about 0.5, so compared to these other counrites I guess it's not that extreme.
+The difference for Canada was about 0.5, so compared to these other counrites I guess it's not that extreme. Switzerland has the largest discrpancy between males and females.
 
-I wasn't able to get the table caption to show up even after a fair bit of google searching.
+I wasn't able to get the table caption to show up even after a fair bit of google searching so I gave up.
 
 ![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_histogram.jpeg)
 
 This plot shows the distribution of body mass index in 2007 by country. Interestingly we can see that the distributions are not normal, especially for the male BMI which looks bimodal. The mean values are indicated by the vertical line.
+
+Next I combined the BMI data with the rest of the gapminder data. Here is a sample of the data:
+
+``` r
+suppressMessages(knitr::kable(read_tsv("datatables/BMI_gapminder_2007.tsv")
+                                                            %>% head(10)))
+```
+
+| country     | continent |  year|  lifeExp|       pop|   gdpPercap| sex    |       BMI|
+|:------------|:----------|-----:|--------:|---------:|-----------:|:-------|---------:|
+| Afghanistan | Asia      |  2007|   43.828|  31889923|    974.5803| male   |  20.60246|
+| Afghanistan | Asia      |  2007|   43.828|  31889923|    974.5803| female |  20.99060|
+| Albania     | Europe    |  2007|   76.423|   3600523|   5937.0295| male   |  26.32753|
+| Albania     | Europe    |  2007|   76.423|   3600523|   5937.0295| female |  25.59394|
+| Algeria     | Africa    |  2007|   72.301|  33333216|   6223.3675| male   |  24.48846|
+| Algeria     | Africa    |  2007|   72.301|  33333216|   6223.3675| female |  26.26096|
+| Angola      | Africa    |  2007|   42.731|  12420476|   4797.2313| male   |  22.08962|
+| Angola      | Africa    |  2007|   42.731|  12420476|   4797.2313| female |  23.26330|
+| Argentina   | Americas  |  2007|   75.320|  40301927|  12779.3796| male   |  27.38889|
+| Argentina   | Americas  |  2007|   75.320|  40301927|  12779.3796| female |  27.32608|
+
+I wanted to look at each continent seperately. Here we can see some summary statistics.
+
+``` r
+suppressMessages(knitr::kable(read_tsv("datatables/summary_data.tsv")))
+```
+
+| continent | sex    |  mean\_BMI|  median\_BMI|  min\_BMI|  max\_BMI|
+|:----------|:-------|----------:|------------:|---------:|---------:|
+| Africa    | female |   24.01483|     23.43311|  20.61484|  29.95573|
+| Africa    | male   |   22.54820|     22.18523|  19.82910|  26.64671|
+| Americas  | female |   27.01804|     26.93672|  23.16703|  30.08747|
+| Americas  | male   |   25.95866|     25.90416|  23.58323|  28.37574|
+| Asia      | female |   24.66674|     23.38390|  20.40963|  31.01442|
+| Asia      | male   |   24.04743|     23.92079|  20.35493|  29.00300|
+| Europe    | female |   25.68356|     25.60437|  24.06285|  28.18455|
+| Europe    | male   |   26.57390|     26.49896|  25.28747|  27.57676|
+
+I also performed a linear regression analysis for each country, with males and females seperately:
+
+``` r
+suppressMessages(knitr::kable(read_tsv("datatables/fitted_models.tsv")))
+```
+
+| continent | sex    | term             |    estimate|  std.error|  statistic|    p.value|
+|:----------|:-------|:-----------------|-----------:|----------:|----------:|----------:|
+| Africa    | female | (Intercept)      |  12.0073107|  1.6651100|   7.211122|  0.0000000|
+| Africa    | female | log10(gdpPercap) |   3.6983250|  0.5083158|   7.275644|  0.0000000|
+| Africa    | male   | (Intercept)      |  14.2085645|  1.1176203|  12.713231|  0.0000000|
+| Africa    | male   | log10(gdpPercap) |   2.5686142|  0.3411811|   7.528594|  0.0000000|
+| Americas  | female | (Intercept)      |  17.6476915|  2.4489009|   7.206372|  0.0000003|
+| Americas  | female | log10(gdpPercap) |   2.3881276|  0.6218844|   3.840147|  0.0008900|
+| Americas  | male   | (Intercept)      |  14.1301696|  1.9484847|   7.251876|  0.0000003|
+| Americas  | male   | log10(gdpPercap) |   3.0146109|  0.4948066|   6.092504|  0.0000039|
+| Asia      | female | (Intercept)      |  14.8411511|  3.5340904|   4.199426|  0.0002092|
+| Asia      | female | log10(gdpPercap) |   2.5883611|  0.9220930|   2.807050|  0.0085680|
+| Asia      | male   | (Intercept)      |  12.3418679|  2.4691075|   4.998514|  0.0000216|
+| Asia      | male   | log10(gdpPercap) |   3.0836045|  0.6442243|   4.786539|  0.0000396|
+| Europe    | female | (Intercept)      |  29.3828386|  2.4387574|  12.048283|  0.0000000|
+| Europe    | female | log10(gdpPercap) |  -0.8531343|  0.5614535|  -1.519510|  0.1402588|
+| Europe    | male   | (Intercept)      |  24.4236724|  1.5792954|  15.464917|  0.0000000|
+| Europe    | male   | log10(gdpPercap) |   0.4958891|  0.3635872|   1.363879|  0.1838687|
+
+Next I wanted to analyze this graphically:
 
 ![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_vs_gdpPercap_plot.jpeg)
 

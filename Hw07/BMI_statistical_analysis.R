@@ -20,14 +20,11 @@ fitted_models = BMI_gapminder_2007 %>%
 	do(model = lm(BMI ~ log10(gdpPercap), data = .)) %>% 
 	tidy(model)
 
-View(summary_data)
-View(fitted_models)
-# join summary data and linear model datatables
-continent_BMI_summary <- inner_join(summary_data, fitted_models, by = c("continent", "sex"))
-
 # save the continent summary datatable
-write_tsv(continent_BMI_summary, "datatables/continent_BMI_summary.tsv")
-View(continent_BMI_summary)
+write_tsv(summary_data, "datatables/summary_data.tsv")
+
+# save the continent linear regression datatable
+write_tsv(fitted_models, "datatables/fitted_models.tsv")
 
 # find countries with large difference in male and female BMI
 BMI_sex_differences <- BMI_gapminder_2007 %>% 

@@ -39,9 +39,9 @@ suppressMessages(knitr::kable(caption = "Countries with largest BMI difference b
 															%>% head(5)))
 ```
 
-The difference for Canada was about 0.5, so compared to these other counrites I guess it's not that extreme.
+The difference for Canada was about 0.5, so compared to these other counrites I guess it's not that extreme. Switzerland has the largest discrpancy between males and females.
 
-I wasn't able to get the table caption to show up even after a fair bit of google searching.
+I wasn't able to get the table caption to show up even after a fair bit of google searching so I gave up.
 
 
 ![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_histogram.jpeg)
@@ -63,6 +63,17 @@ I wanted to look at each continent seperately. Here we can see some summary stat
 ```{r}
 suppressMessages(knitr::kable(read_tsv("datatables/summary_data.tsv")))
 ```
+
+
+I also performed a linear regression analysis for each country, with males and females seperately:
+
+```{r}
+suppressMessages(knitr::kable(read_tsv("datatables/fitted_models.tsv")))
+```
+
+
+Next I wanted to analyze this graphically:
+
 
 ![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_vs_gdpPercap_plot.jpeg)
 

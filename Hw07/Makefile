@@ -1,10 +1,10 @@
-all: Hw07_automating_data_analysis_pipelines.md
+all: clean Hw07_automating_data_analysis_pipelines.md
 
-# delete old datatables and plots
+# delete old datatables and plots so can start fresh
 clean:
 	Rscript -e 'setwd(setwd("~/UBC/STAT 545/STAT545-hw-Kamal-Sepehr/Hw07"))' # set working directory
-	rm -f datatables/*.rds datatables/*.tsv
-	rm -f plots/*.jpeg
+	rm -f datatables/*.rds datatables/*.tsv       #### delete all datatables
+	rm -f plots/*.jpeg     ### delete all plot images
 	rm -f Hw07_automating_data_analysis_pipelines.md
 
 # download gapminder male BMI data from google sheet using gsheet
@@ -32,7 +32,7 @@ plots/BMI_plot_canada.jpeg plots/BMI_vs_gdpPercap_plot.jpeg plots/BMI_histogram.
 	Rscript $<
 	
 # render markdown file
-Hw07_automating_data_analysis_pipelines.md: Hw07_automating_data_analysis_pipelines.Rmd datatables/BMI_sex_differences.tsv plots/BMI_plot_canada.jpeg plots/BMI_vs_gdpPercap_plot.jpeg plots/BMI_histogram.jpeg datatables/summary_data.tsv datatables/fitted_models.tsv datatables/fitted_models_modelr.tsv
+Hw07_automating_data_analysis_pipelines.md: Hw07_automating_data_analysis_pipelines.Rmd plots/BMI_plot_canada.jpeg plots/BMI_vs_gdpPercap_plot.jpeg plots/BMI_histogram.jpeg datatables/summary_data.tsv datatables/fitted_models.tsv datatables/fitted_models_modelr.tsv datatables/BMI_data.tsv datatables/BMI_sex_differences.tsv datatables/BMI_gapminder_2007.tsv	
 	Rscript -e 'rmarkdown::render("$<")'
 	rm -f Hw07_automating_data_analysis_pipelines.html
 

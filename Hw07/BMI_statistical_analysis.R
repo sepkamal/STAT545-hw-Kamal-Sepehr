@@ -60,7 +60,7 @@ fitted_models_modelr <- rbind.data.frame(Africa_m, Africa_f, Europe_m, Europe_f,
 write_tsv(fitted_models_modelr, "datatables/fitted_models_modelr.tsv")
 
 
-######## find countries with large difference in male and female BMI ###########
+#################### find countries with large difference in male and female BMI ###########
 BMI_sex_differences <- BMI_gapminder_2007 %>% 
 	select(country, sex, BMI) %>% 
 	spread(sex, BMI) %>% 

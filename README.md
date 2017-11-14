@@ -6,7 +6,7 @@ Hi, this is the repository for my homework assignments for STAT 545 at UBC.
 
 Use the below table to navigate my homework assignments:
 
-**Homework #** | **Like or dislike** |
+**Homework #** | **File** |
 --- | --- 
 01 - Edit README.md and Use R Markdown | [hw01_gapminder.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw01/hw01_gapminder.md) 
 02 - Explore Gapminder and use dplyr | [hw02_gapminder_dplyr.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw02/hw02_gapminder_dplyr.md) 

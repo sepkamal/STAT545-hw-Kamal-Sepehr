@@ -3,7 +3,7 @@ title: "Hw07_Automating Data-analysis Pipelines"
 output: github_document
 ---
 
-The overall aim of this assignment is to **look for trends in the gapminder data using body mass index as a measure of obesity**. I thought this would be an interesting idea as I work in a diabetes research lab. I was originally going to use diabetes rates as I did in [homework04](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md), but then I found a nice BMI dataset on the [gapminder website](http://www.gapminder.org/data/), which references the MRC-HPA Centre for Environment and Health.
+The overall aim of this assignment is to **look for trends in the gapminder data using body mass index (BMI) as a measure of obesity**. I thought this would be an interesting idea as I work in a diabetes research lab. I was originally going to use diabetes prevalence as I did in [homework04](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw04/hw04-tidaydata.md), but then I found a nice BMI dataset on the [gapminder website](http://www.gapminder.org/data/), which references the MRC-HPA Centre for Environment and Health.
 
 The BMI data is provided as a google sheet, so downloading it was a bit tricky. Luckily there is a package `gsheet` which helps download google sheets in R. The BMI data was provided seperately for males and females, so I downloaded both files.
 
@@ -16,3 +16,15 @@ head(BMI_data)
 
 
 There was not enough data for Oceania, so I removed it from the analysis.
+
+
+![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_plot_canada.jpeg)
+
+
+This plot shows the trend in BMI in Canada from 1980 to 2008. Male BMI is consistently higher than female BMI, and both trend upwards in a somewhat linear fashion. It would be very interesting to see how this has changed more recently (between 2008 and 2017).
+
+
+![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_histogram.jpeg)
+
+
+This plot shows the distribution of body mass index in 2007 by country. Interestingly we can see that the distributions are not normal, especially for the male BMI which looks bimodal. The mean values are indicated by the vertical line.

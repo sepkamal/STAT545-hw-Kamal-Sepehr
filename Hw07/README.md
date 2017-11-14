@@ -11,8 +11,12 @@ See the  file []() for my assignment.
 
 - [This site](https://stackoverflow.com/questions/10357768/plotting-lines-and-the-group-aesthetic-in-ggplot2) was helpful for explaning why my `geom_smooth` wouldn't put a line on my graph until I specified `group = sex`. It has to do with the x-axis (year) being a factor.
 
+- [This site](https://stackoverflow.com/questions/1169539/linear-regression-and-group-by-in-r) was helpful for my linear regression analysis.
+
 - This was a surprisingly enjoyable assingment to put together, especially after [homework 06](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw06/HW6_Data_wrangling_wrap_up.md) became a bit of a nightmare.
 
-- I found myself repeadtedly reffering to my previous HW assingments when trying to remember how to do something. This was especially true for ggplot.
+- I found myself repeadtedly reffering to my previous HW assingments when trying to remember how to do something. This was especially true for ggplot. I have a feeling these assignments will be a great resource for myself beyond this class.
 
+
+![logo](https://i.imgflip.com/1wj55o.jpg)
 

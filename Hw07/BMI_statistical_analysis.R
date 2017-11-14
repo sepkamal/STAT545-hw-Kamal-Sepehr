@@ -15,19 +15,19 @@ summary_data <- BMI_gapminder_2007 %>%
 
 # for each continent look at relationship between BMI and gdpPercap in 2007
 fitted_models = BMI_gapminder_2007 %>%
-	filter(continent != "Oceania") %>% 
+	filter(continent != "Oceania") %>% # not enough data points so remove oceania
 	group_by(continent, sex) %>% 
-	do(model = lm(BMI ~ log10(gdpPercap), data = .))
-	#tidy(model)
+	do(model = lm(BMI ~ log10(gdpPercap), data = .)) %>% 
+	tidy(model)
 
+View(summary_data)
+View(fitted_models)
+# join summary data and linear model datatables
+continent_BMI_summary <- inner_join(summary_data, fitted_models, by = c("continent", "sex"))
 
-View(fitted_models$model)
-
-
-
-
-
-
+# save the continent summary datatable
+write_tsv(continent_BMI_summary, "datatables/continent_BMI_summary.tsv")
+View(continent_BMI_summary)
 
 # find countries with large difference in male and female BMI
 BMI_sex_differences <- BMI_gapminder_2007 %>% 
@@ -36,5 +36,5 @@ BMI_sex_differences <- BMI_gapminder_2007 %>%
 	mutate(BMI_sex_difference = male - female) %>%
 	arrange(desc(BMI_sex_difference))
 
-# save the table
+# save the sex differences datatable
 write_tsv(BMI_sex_differences, "datatables/BMI_sex_differences.tsv")

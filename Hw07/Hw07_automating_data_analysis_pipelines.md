@@ -15,21 +15,16 @@ suppressMessages(library(tidyverse))
 
 ``` r
 suppressMessages(knitr::kable(read_tsv("datatables/BMI_data.tsv.")
-                                                            %>% head(10)))
+                                                            %>% head(5)))
 ```
 
-| country             | sex  |  year|       BMI|
-|:--------------------|:-----|-----:|---------:|
-| Afghanistan         | male |  1980|  21.48678|
-| Albania             | male |  1980|  25.22533|
-| Algeria             | male |  1980|  22.25703|
-| Andorra             | male |  1980|  25.66652|
-| Angola              | male |  1980|  20.94876|
-| Antigua and Barbuda | male |  1980|  23.31424|
-| Argentina           | male |  1980|  25.37913|
-| Armenia             | male |  1980|  23.82469|
-| Australia           | male |  1980|  24.92729|
-| Austria             | male |  1980|  24.84097|
+| country     | sex  |  year|       BMI|
+|:------------|:-----|-----:|---------:|
+| Afghanistan | male |  1980|  21.48678|
+| Albania     | male |  1980|  25.22533|
+| Algeria     | male |  1980|  22.25703|
+| Andorra     | male |  1980|  25.66652|
+| Angola      | male |  1980|  20.94876|
 
 ![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_plot_canada.jpeg)
 
@@ -39,8 +34,8 @@ I was curious how 'normal' this difference in BMI between males and females is. 
 
 ``` r
 suppressMessages(knitr::kable(caption = "Countries with largest BMI difference between males and females",
-                                                            x = read_tsv("datatables/BMI_sex_differences.tsv") 
-                                                            %>% head(5)))
+                                                            x = read_tsv("datatables/BMI_sex_differences.tsv") %>%
+                                                          head(5)))
 ```
 
 | country     |    female|      male|  BMI\_sex\_difference|
@@ -62,22 +57,17 @@ This plot shows the distribution of body mass index in 2007 by country. Interest
 Next I combined the BMI data with the rest of the gapminder data. Here is a sample of the data:
 
 ``` r
-suppressMessages(knitr::kable(read_tsv("datatables/BMI_gapminder_2007.tsv")
-                                                            %>% head(10)))
+suppressMessages(knitr::kable(read_tsv("datatables/BMI_gapminder_2007.tsv") %>% 
+                                                         head(5)))
 ```
 
-| country     | continent |  year|  lifeExp|       pop|   gdpPercap| sex    |       BMI|
-|:------------|:----------|-----:|--------:|---------:|-----------:|:-------|---------:|
-| Afghanistan | Asia      |  2007|   43.828|  31889923|    974.5803| male   |  20.60246|
-| Afghanistan | Asia      |  2007|   43.828|  31889923|    974.5803| female |  20.99060|
-| Albania     | Europe    |  2007|   76.423|   3600523|   5937.0295| male   |  26.32753|
-| Albania     | Europe    |  2007|   76.423|   3600523|   5937.0295| female |  25.59394|
-| Algeria     | Africa    |  2007|   72.301|  33333216|   6223.3675| male   |  24.48846|
-| Algeria     | Africa    |  2007|   72.301|  33333216|   6223.3675| female |  26.26096|
-| Angola      | Africa    |  2007|   42.731|  12420476|   4797.2313| male   |  22.08962|
-| Angola      | Africa    |  2007|   42.731|  12420476|   4797.2313| female |  23.26330|
-| Argentina   | Americas  |  2007|   75.320|  40301927|  12779.3796| male   |  27.38889|
-| Argentina   | Americas  |  2007|   75.320|  40301927|  12779.3796| female |  27.32608|
+| country     | continent |  year|  lifeExp|       pop|  gdpPercap| sex    |       BMI|
+|:------------|:----------|-----:|--------:|---------:|----------:|:-------|---------:|
+| Afghanistan | Asia      |  2007|   43.828|  31889923|   974.5803| male   |  20.60246|
+| Afghanistan | Asia      |  2007|   43.828|  31889923|   974.5803| female |  20.99060|
+| Albania     | Europe    |  2007|   76.423|   3600523|  5937.0295| male   |  26.32753|
+| Albania     | Europe    |  2007|   76.423|   3600523|  5937.0295| female |  25.59394|
+| Algeria     | Africa    |  2007|   72.301|  33333216|  6223.3675| male   |  24.48846|
 
 I wanted to look at each continent seperately. Here we can see some summary statistics.
 
@@ -99,29 +89,34 @@ suppressMessages(knitr::kable(read_tsv("datatables/summary_data.tsv")))
 I also performed a linear regression analysis for each country, with males and females seperately:
 
 ``` r
-suppressMessages(knitr::kable(read_tsv("datatables/fitted_models.tsv")))
+suppressMessages(knitr::kable(read_tsv("datatables/fitted_models.tsv") %>% 
+                                                                head(5)))
 ```
 
-| continent | sex    | term             |    estimate|  std.error|  statistic|    p.value|
-|:----------|:-------|:-----------------|-----------:|----------:|----------:|----------:|
-| Africa    | female | (Intercept)      |  12.0073107|  1.6651100|   7.211122|  0.0000000|
-| Africa    | female | log10(gdpPercap) |   3.6983250|  0.5083158|   7.275644|  0.0000000|
-| Africa    | male   | (Intercept)      |  14.2085645|  1.1176203|  12.713231|  0.0000000|
-| Africa    | male   | log10(gdpPercap) |   2.5686142|  0.3411811|   7.528594|  0.0000000|
-| Americas  | female | (Intercept)      |  17.6476915|  2.4489009|   7.206372|  0.0000003|
-| Americas  | female | log10(gdpPercap) |   2.3881276|  0.6218844|   3.840147|  0.0008900|
-| Americas  | male   | (Intercept)      |  14.1301696|  1.9484847|   7.251876|  0.0000003|
-| Americas  | male   | log10(gdpPercap) |   3.0146109|  0.4948066|   6.092504|  0.0000039|
-| Asia      | female | (Intercept)      |  14.8411511|  3.5340904|   4.199426|  0.0002092|
-| Asia      | female | log10(gdpPercap) |   2.5883611|  0.9220930|   2.807050|  0.0085680|
-| Asia      | male   | (Intercept)      |  12.3418679|  2.4691075|   4.998514|  0.0000216|
-| Asia      | male   | log10(gdpPercap) |   3.0836045|  0.6442243|   4.786539|  0.0000396|
-| Europe    | female | (Intercept)      |  29.3828386|  2.4387574|  12.048283|  0.0000000|
-| Europe    | female | log10(gdpPercap) |  -0.8531343|  0.5614535|  -1.519510|  0.1402588|
-| Europe    | male   | (Intercept)      |  24.4236724|  1.5792954|  15.464917|  0.0000000|
-| Europe    | male   | log10(gdpPercap) |   0.4958891|  0.3635872|   1.363879|  0.1838687|
+| continent | sex    |  intercept|     slope|
+|:----------|:-------|----------:|---------:|
+| Africa    | female |   12.00731|  3.698325|
+| Africa    | male   |   14.20856|  2.568614|
+| Americas  | female |   17.64769|  2.388128|
+| Americas  | male   |   14.13017|  3.014611|
+| Asia      | female |   14.84115|  2.588361|
 
-Next I wanted to analyze this graphically:
+I had **A LOT** of trouble getting linear model to show on the graph. The challenge was beauce we don't have just one model, we have 8. And it needs to behave well with the faceting. Eventually I got it working using the `add_predictions()` function from the `modelr` package. The only way it would run correctly was to run it 8 seperate times, once for each continent and sex pair. Here is the table, the `pred` column contains the predictions made by `add_predictions()`.
+
+``` r
+suppressMessages(knitr::kable(read_tsv("datatables/fitted_models_modelr.tsv") %>% 
+                                                                head(5)))
+```
+
+| country      | continent |  year|  lifeExp|       pop|  gdpPercap| sex  |       BMI|      pred|
+|:-------------|:----------|-----:|--------:|---------:|----------:|:-----|---------:|---------:|
+| Algeria      | Africa    |  2007|   72.301|  33333216|   6223.367| male |  24.48846|  23.95395|
+| Angola       | Africa    |  2007|   42.731|  12420476|   4797.231| male |  22.08962|  23.66361|
+| Benin        | Africa    |  2007|   56.728|   8078314|   1441.285| male |  22.33366|  22.32217|
+| Botswana     | Africa    |  2007|   50.728|   1639131|  12569.852| male |  21.98606|  24.73816|
+| Burkina Faso | Africa    |  2007|   52.295|  14326203|   1217.033| male |  21.18575|  22.13352|
+
+Next I plotted this with my linear models displaying correctly:
 
 ![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_vs_gdpPercap_plot.jpeg)
 

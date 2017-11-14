@@ -73,7 +73,16 @@ suppressMessages(knitr::kable(read_tsv("datatables/fitted_models.tsv") %>%
 ```
 
 
-Next I wanted to analyze this graphically:
+I had **A LOT** of trouble getting linear model to show on the graph. The challenge was beauce we don't have just one model, we have 8. And it needs to behave well with the faceting. Eventually I got it working using the `add_predictions()` function from the `modelr` package. The only way it would run correctly was to run it 8 seperate times, once for each continent and sex pair. Here is the table, the `pred` column contains the predictions made by `add_predictions()`.
+
+```{r}
+suppressMessages(knitr::kable(read_tsv("datatables/fitted_models_modelr.tsv") %>% 
+																head(5)))
+```
+
+
+
+Next I plotted this with my linear models displaying correctly:
 
 
 ![logo](https://raw.githubusercontent.com/sepkamal/STAT545-hw-Kamal-Sepehr/master/Hw07/plots/BMI_vs_gdpPercap_plot.jpeg)

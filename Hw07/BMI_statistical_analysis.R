@@ -6,7 +6,7 @@ suppressPackageStartupMessages(library(reshape2))
 # load BMI gapminder 2007 data
 BMI_gapminder_2007 <- read_tsv("datatables/BMI_gapminder_2007.tsv")
 
-# summary statistics by continent
+############ summary statistics by continent #############
 summary_data <- BMI_gapminder_2007 %>%
 	filter(continent != "Oceania") %>% 
 	group_by(continent, sex) %>%
@@ -15,7 +15,10 @@ summary_data <- BMI_gapminder_2007 %>%
 						min_BMI = min(BMI),
 						max_BMI = max(BMI))
 
-# for each continent look at relationship between BMI and gdpPercap in 2007
+# save the continent summary datatable
+write_tsv(summary_data, "datatables/summary_data.tsv")
+
+########### for each continent look at relationship between BMI and gdpPercap in 2007 ##########
 fitted_models = BMI_gapminder_2007 %>%
 	filter(continent != "Oceania") %>% # not enough data points so remove oceania
 	group_by(continent, sex) %>% 
@@ -23,65 +26,41 @@ fitted_models = BMI_gapminder_2007 %>%
 	tidy(model) %>% 
 	select(continent, sex, term, estimate) %>% 
 	spread(key = term, value = estimate) %>% 
-	mutate(intercept =`(Intercept)`, log10gdpPercap = `log10(gdpPercap)`) %>% 
-	select(continent, sex, intercept, log10gdpPercap)
-
-# save the continent summary datatable
-write_tsv(summary_data, "datatables/summary_data.tsv")
+	mutate(intercept =`(Intercept)`, slope = `log10(gdpPercap)`) %>% 
+	select(continent, sex, intercept, slope)
 
 # save the continent linear regression datatable
 write_tsv(fitted_models, "datatables/fitted_models.tsv")
 
-############## FITTED MODEL AGAIN USING modelr package #####################
-# for each continent look at relationship between BMI and gdpPercap in 2007
-fitted_models_modelr_male = BMI_gapminder_2007 %>%
-	filter(continent != "Oceania") %>% # not enough data points so remove oceania
-	group_by(continent, sex) %>% 
-	filter(sex == "male") %>% 
-	add_predictions(lm(BMI ~ log10(gdpPercap), data = ., subset = sex == "male"))
+############## FITTED MODEL AGAIN USING modelr PACKAGE #####################
 
-fitted_models_modelr_female = BMI_gapminder_2007 %>%
-	filter(continent != "Oceania") %>% # not enough data points so remove oceania
-		group_by(continent, sex) %>% 
-	filter(sex == "female") %>% 
-	add_predictions(lm(BMI ~ log10(gdpPercap), data = ., subset = sex == "female"))
-
-fitted_model_subset <- function(continent1, sex1){
+# function using lm to make predictions on BMI vs gdpPercap
+fitted_model_function <- function(continent_selection, sex_selection){
 	BMI_gapminder_2007 %>%
 		filter(continent != "Oceania") %>% # not enough data points so remove oceania
-		filter(sex == sex1, continent == continent1) %>% 
-		add_predictions(lm(BMI ~ log10(gdpPercap), data = .))
+		filter(sex == sex_selection, continent == continent_selection) %>% 
+		add_predictions(lm(BMI ~ log10(gdpPercap), data = .))  ## creates columnn with predicted y values
 }
 
-Africa_m <- fitted_model_subset("Africa", "male")
-Americas_m <- fitted_model_subset("Americas", "male")
-Europe_m <- fitted_model_subset("Europe", "male")
-Asia_m <- fitted_model_subset("Asia", "male")
-Africa_f <- fitted_model_subset("Africa", "female")
-Americas_f <- fitted_model_subset("Americas", "female")
-Europe_f <- fitted_model_subset("Europe", "female")
-Asia_f <- fitted_model_subset("Asia", "female")
+# call function for each continent and sex combination
+Africa_m <- fitted_model_function("Africa", "male")
+Americas_m <- fitted_model_function("Americas", "male")
+Europe_m <- fitted_model_function("Europe", "male")
+Asia_m <- fitted_model_function("Asia", "male")
 
-fitted_models_new <- rbind.data.frame(Africa_m, Africa_f, Europe_m, Europe_f, Americas_m, Americas_f, Asia_m, Asia_f)
+Africa_f <- fitted_model_function("Africa", "female")
+Americas_f <- fitted_model_function("Americas", "female")
+Europe_f <- fitted_model_function("Europe", "female")
+Asia_f <- fitted_model_function("Asia", "female")
 
-View(fitted_models_new)
+# merge all continent and sex data together
+fitted_models_modelr <- rbind.data.frame(Africa_m, Africa_f, Europe_m, Europe_f, Americas_m, Americas_f, Asia_m, Asia_f)
 
-fitted_models_modelr_combine <-  rbind.data.frame(fitted_models_modelr_male, fitted_models_modelr_female)
-
-View(fitted_models)
-
-fitted_models_do = BMI_gapminder_2007 %>%
-	filter(continent != "Oceania") %>% # not enough data points so remove oceania
-	group_by(continent, sex) %>% 
-	do(add_predictions(lm(BMI ~ log10(gdpPercap), data = .)))
-
-View(fitted_models_do$pred)
-
-# save the continent linear regression datatable
-write_tsv(fitted_models_new, "datatables/fitted_models_new.tsv")
+# save the modelr predictions datatable
+write_tsv(fitted_models_modelr, "datatables/fitted_models_modelr.tsv")
 
 
-# find countries with large difference in male and female BMI
+######## find countries with large difference in male and female BMI ###########
 BMI_sex_differences <- BMI_gapminder_2007 %>% 
 	select(country, sex, BMI) %>% 
 	spread(sex, BMI) %>% 

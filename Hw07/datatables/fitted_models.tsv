@@ -1,4 +1,4 @@
-continent	sex	intercept	log10gdpPercap
+continent	sex	intercept	slope
 Africa	female	12.007310726221686	3.6983250172231323
 Africa	male	14.208564453714057	2.568614212720336
 Americas	female	17.647691484830297	2.388127630140154

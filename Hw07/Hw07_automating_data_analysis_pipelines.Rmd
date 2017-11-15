@@ -27,7 +27,7 @@ suppressMessages(knitr::kable(read_tsv("datatables/BMI_data.tsv.")
 
 This plot shows the trend in BMI in Canada from 1980 to 2008. Male BMI is consistently higher than female BMI, and both trend upwards in a somewhat linear fashion. It would be very interesting to see how this has changed more recently (between 2008 and 2017).
 
-I was curious how 'normal' this difference in BMI between males and females is. This table shows us the top 5 countries with the largest BMI difference between males and females.
+I was curious how 'normal' this difference in BMI between males and females is. This table shows us the top 5 countries with male BMI higher than female BMI.
 
 
 
@@ -91,6 +91,6 @@ This plot was my main goal of the assignment. Here we are analyzing whether ther
 
 The relationship is present in 3 of the 4 continents (Oceania was not analyzed due to insufficient data). Europe seems to be the exception, and here there may even be a slight negative correlation for females. This is something that public health officials should note and try to figure out what the Europeans are doing better than the rest of us.
 
-Again, males seem to consistently have a higher BMI than females in all 4 continents.
+Males seem to  have a higher BMI than females in Europe, but females are higher in the other 3 continents.
 
 

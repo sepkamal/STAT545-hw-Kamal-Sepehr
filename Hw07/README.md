@@ -3,7 +3,7 @@ hw07\_readme
 	
 Homework07 folder for STAT 545.
 
-See [Hw07_automating_data_analysis_pipelines.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/8069721e2e6b2ffa9cd80d6f3c549d72471abe38/Hw07/Hw07_automating_data_analysis_pipelines.md) for my main assignment.
+See [Hw07_automating_data_analysis_pipelines.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw07/Hw07_automating_data_analysis_pipelines.md) for my main assignment.
 
 Here are the 3 scripts, in the order in which they are run:
  - [BMI_data_wrangling.R](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw07/BMI_data_wrangling.R)

@@ -22,7 +22,7 @@ Here are the scripts that created my shiny app:
 
 - My Shiny app is definitely not perfect, and I would have liked to host it on my own shiny server, but I didn't want to pay for a website.
 
-- I added a feature that shows a black screen while the shiny app is loading. I used the code from this [github page(https://github.com/daattali/advanced-shiny/tree/master/loading-screen)
+- I added a feature that shows a yellow loading screen while the shiny app is loading. I used the code from this [github page(https://github.com/daattali/advanced-shiny/tree/master/loading-screen)
 
 - As I added more features, it quickly became clear how confusing the server.R and ui.R code can become. One way to make it cleaner would be using a separate CSS file in the `www` folder to store the formatting information. 
 

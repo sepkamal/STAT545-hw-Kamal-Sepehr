@@ -5,8 +5,8 @@ account: sepkamal
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 238703
-bundleId: 1089749
+bundleId: 1089777
 url: https://sepkamal.shinyapps.io/Body_Mass_Index_Explorer/
-when: 1511334265.2285
+when: 1511336163.24889
 asMultiple: FALSE
 asStatic: FALSE

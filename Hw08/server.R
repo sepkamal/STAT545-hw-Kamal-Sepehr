@@ -1,6 +1,6 @@
 # load packages
 
-
+library(tidyverse)
 
 server <- function(input, output) {
 	# load data from file
@@ -77,13 +77,18 @@ server <- function(input, output) {
 		                                data with the current filtering settings. \n" })
 	
 	
+	### text in sidebar to display number of results based on search parameters
+	output$sidebar_text <- renderText({paste("Your search parameters found", 
+											 nrow(filtered_BMI_data()), 
+											 "results")})
+	
 	########## Loading screen #############
 	# Simulate work being done for 1 second (for the loading screen)
 	Sys.sleep(1)
 	# Hide the loading message when the rest of the server function has executed
-	hide(id = "loading-content", anim = TRUE, animType = "slide", time = 1 )    
+	hide(id = "loading-content", anim = TRUE, animType = "slide", time = 2 )    
 	show("app-content")
 	
 	
-	
 }
+

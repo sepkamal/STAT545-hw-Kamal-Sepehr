@@ -71,7 +71,10 @@ ui <- fluidPage(
 			     			 selected = c("male", "female")),
 				 
 				 # select colour to use in the histogram
-				 colourInput("col", "Select histogram colour", "blue")
+				 colourInput("col", "Select histogram colour", "blue"),
+				 
+				 # text displaying the number of entries that meet the input parameters
+				 textOutput('sidebar_text')
 				 
 	),
 	

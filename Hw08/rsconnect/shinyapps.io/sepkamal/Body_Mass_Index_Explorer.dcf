@@ -1,0 +1,13 @@
+name: Body_Mass_Index_Explorer
+title: Body_Mass_Index_Explorer
+username:
+account: sepkamal
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 238703
+bundleId: 1089617
+url: https://sepkamal.shinyapps.io/Body_Mass_Index_Explorer/
+when: 1511326512.41342
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: data/bcl-data.csv

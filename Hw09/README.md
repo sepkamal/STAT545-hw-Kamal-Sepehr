@@ -1,4 +1,4 @@
-hw08\_Building your own R package
+hw09\_Building your own R package
 ================
 	
 **Homework09 folder for STAT 547.**
@@ -21,4 +21,4 @@ In addition, I also added more documentation to explain things thoroughly, and t
 
 - One thing that was tricky was using `%>%`. It turns out the pipe function is not part of dplyr. dplyr itself loads the package from magrittr, therefore we need to do this too. Also due to its special characters, in order to use it I first had to load it like this ``%>%` <- magrittr::`%>%``. [This site](https://stackoverflow.com/questions/27386694/using-operator-from-dplyr-without-loading-dplyr-in-r) helped.
 
-- I ran into a major issue where I kept getting erros saying function `data_table()` cannot be found. This was likely as this function is from `dplyr`. The problem was I removed this function from my code a while back and replaced it with `data.frame`, which is from base R. Yet the error message persisted and in my effort to fix it, I broke numerous other things...but it worked in the end.
+- I ran into a major issue where I kept getting errors saying function `data_frame()` cannot be found. This was likely as this function is from `dplyr`. The problem was I removed this function from my code a while back and replaced it with `data.frame()`, which is from base R. Yet the error message persisted and in my effort to fix it, I broke numerous other things...but it worked in the end.

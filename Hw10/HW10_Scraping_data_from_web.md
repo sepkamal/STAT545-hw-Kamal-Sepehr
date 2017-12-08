@@ -5,85 +5,25 @@ For my final STAT 547 assignment, I will scrape the IMDB top 250 movies page.
 
 We will use `rvest` (which includes `xml2`) to acquire the data.
 
-``` r
-library(rvest)
-```
-
-    ## Loading required package: xml2
+Load Packages
+-------------
 
 ``` r
-library(dplyr)
-```
-
-    ## 
-    ## Attaching package: 'dplyr'
-
-    ## The following objects are masked from 'package:stats':
-    ## 
-    ##     filter, lag
-
-    ## The following objects are masked from 'package:base':
-    ## 
-    ##     intersect, setdiff, setequal, union
-
-``` r
-library(knitr)
-library(glue)
-```
-
-    ## 
-    ## Attaching package: 'glue'
-
-    ## The following object is masked from 'package:dplyr':
-    ## 
-    ##     collapse
-
-``` r
-library(magrittr)
-library(purrr)
-```
-
-    ## 
-    ## Attaching package: 'purrr'
-
-    ## The following object is masked from 'package:magrittr':
-    ## 
-    ##     set_names
-
-    ## The following object is masked from 'package:rvest':
-    ## 
-    ##     pluck
-
-``` r
-library(stringr)
-library(data.table)
-```
-
-    ## 
-    ## Attaching package: 'data.table'
-
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     transpose
-
-    ## The following objects are masked from 'package:dplyr':
-    ## 
-    ##     between, first, last
-
-``` r
-library(ggplot2)
+suppressPackageStartupMessages(library(rvest))
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(knitr))
+suppressPackageStartupMessages(library(glue))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(purrr))
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(ggplot2))
 suppressPackageStartupMessages(library(forcats))
-library(readr)
+suppressPackageStartupMessages(library(readr))
 ```
-
-    ## 
-    ## Attaching package: 'readr'
-
-    ## The following object is masked from 'package:rvest':
-    ## 
-    ##     guess_encoding
 
 Lets get the list of all 250 movie titles
+-----------------------------------------
 
 ``` r
 # save the url to imdb page with top 250 movie list
@@ -103,28 +43,48 @@ length(movie_titles)
 ``` r
 # examine beginning of list showing extra information
 movie_titles %>% 
-  head(10)
+  head(10) %>% 
+    kable()
 ```
 
-    ##  [1] ""                                                                                                                            
-    ##  [2] "IMDb"                                                                                                                        
-    ##  [3] "More"                                                                                                                        
-    ##  [4] "Movies"                                                                                                                      
-    ##  [5] "TV"                                                                                                                          
-    ##  [6] "Showtimes"                                                                                                                   
-    ##  [7] "\n                        "                                                                                                  
-    ##  [8] "\n                                                                The Dark Knight\n (2008)\n                                "
-    ##  [9] "\n                                    #4 on IMDb Top Rated Movies\n                                "                         
-    ## [10] "In Theaters"
+    ## Warning in kable_markdown(x = structure(c("", "IMDb", "More", "Movies", :
+    ## The table should have a header (column names)
+
+|                              |
+|:-----------------------------|
+|                              |
+| IMDb                         |
+| More                         |
+| Movies                       |
+| TV                           |
+| Showtimes                    |
+|                              |
+| The Dark Knight              |
+| (2008)                       |
+| \#4 on IMDb Top Rated Movies |
+| In Theaters                  |
 
 ``` r
 # examine middle of list showing movie titles and blank entries
-movie_titles[76:80]
+kable(movie_titles[76:86])
 ```
 
-    ## [1] "The Shawshank Redemption" " "                       
-    ## [3] "The Godfather"            " "                       
-    ## [5] "The Godfather: Part II"
+    ## Warning in kable_markdown(x = structure(c("The Shawshank Redemption", "", :
+    ## The table should have a header (column names)
+
+|                          |
+|:-------------------------|
+| The Shawshank Redemption |
+|                          |
+| The Godfather            |
+|                          |
+| The Godfather: Part II   |
+|                          |
+| The Dark Knight          |
+|                          |
+| 12 Angry Men             |
+|                          |
+| Schindler's List         |
 
 As we can see, the above list includes the movie titles, but also has a lot of blanks and extra information.
 
@@ -142,17 +102,23 @@ movie_df[] <- data.frame(Movie_Titles = movie_titles[76:574]) %>%   ## [] keeps 
 movie_df <- data.frame(Movie_Titles = movie_df[[1]]) %>%  ## added data.frame() due to knitting error
     mutate(IMDB_Ranking = row_number())
 
-kable(movie_df) %>% 
-    head(5)
+movie_df %>% 
+    head(5) %>% 
+  kable()
 ```
 
-    ## [1] "Movie_Titles                                                            IMDB_Ranking"
-    ## [2] "---------------------------------------------------------------------  -------------"
-    ## [3] "The Shawshank Redemption                                                           1"
-    ## [4] "The Godfather                                                                      2"
-    ## [5] "The Godfather: Part II                                                             3"
+| Movie\_Titles            |  IMDB\_Ranking|
+|:-------------------------|--------------:|
+| The Shawshank Redemption |              1|
+| The Godfather            |              2|
+| The Godfather: Part II   |              3|
+| The Dark Knight          |              4|
+| 12 Angry Men             |              5|
 
 Now we have a datatable with 250 rows, 1 row for each of the 250 movies. The table is in descending order of the IMDB movie ranking, and I added a column to store the IMDB ranking so we can use it for data analysis later.
+
+Get links to page for each movie
+--------------------------------
 
 Next lets add links to the IMDB page for each movie as a new column:
 
@@ -175,19 +141,20 @@ movie_urls_df <- data.frame(partial_url = movie_urls_df[1]) %>%
 movie_df_merged <- inner_join(movie_df, movie_urls_df, by = "IMDB_Ranking") %>% 
     select(IMDB_Ranking, Movie_Titles, Link) # reorder columns and drop partial_url column
 
-kable(movie_df_merged) %>% 
-    head(5)
+
+# view table
+movie_df_merged %>% 
+    head(5) %>% 
+  kable()
 ```
 
-    ## [1] " IMDB_Ranking  Movie_Titles                                                           Link                                                                                                                                                                     "
-    ## [2] "-------------  ---------------------------------------------------------------------  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
-    ## [3] "            1  The Shawshank Redemption                                               http://www.imdb.com/title/tt0111161/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_1   "
-    ## [4] "            2  The Godfather                                                          http://www.imdb.com/title/tt0068646/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_2   "
-    ## [5] "            3  The Godfather: Part II                                                 http://www.imdb.com/title/tt0071562/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_3   "
-
-``` r
-View(movie_df_merged)
-```
+|  IMDB\_Ranking| Movie\_Titles            | Link                                                                                                                                                                     |
+|--------------:|:-------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|              1| The Shawshank Redemption | <http://www.imdb.com/title/tt0111161/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_1> |
+|              2| The Godfather            | <http://www.imdb.com/title/tt0068646/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_2> |
+|              3| The Godfather: Part II   | <http://www.imdb.com/title/tt0071562/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_3> |
+|              4| The Dark Knight          | <http://www.imdb.com/title/tt0468569/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_4> |
+|              5| 12 Angry Men             | <http://www.imdb.com/title/tt0050083/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_5> |
 
 Now we have added the links to the IMDB page for each movie. We can now go to this url and get more data about each movie.
 
@@ -209,7 +176,7 @@ movie_df_merged %<>%     ### this symbol is equiv to <- and %>%  together
 # function to get the gross USA $ earnings for each movie
 get_gross_USA <- function(movie_url){
     raw_gross_usa <- data.frame(x = 
-                                                        read_html("http://www.imdb.com/title/tt0111161/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=1QZ5QVDWP5CRXFW73X1A&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_1")  %>%
+                                                        read_html(movie_url)  %>%
                                                         html_nodes(".txt-block") %>%    
                                                         html_text()) %>% 
     mutate(lots_of_info = as.character(x)) %>%   # convert factor to character in new column
@@ -230,21 +197,24 @@ movie_df_merged_GROSS <-  movie_df_merged %>%      ### this symbol is equiv to <
 movie_df_merged_GROSS %<>% 
     mutate(Gross_USA = as.numeric(Gross_USA))
 
+# View final table
 movie_df_merged_GROSS %>% 
-    kable() %>% 
-    head(10)
+  head(10) %>% 
+  kable()
 ```
 
-    ##  [1] " IMDB_Ranking  Movie_Titles                                                           Link                                                                                                                                                                       Director                            Gross_USA"
-    ##  [2] "-------------  ---------------------------------------------------------------------  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------  ---------------------------------  ----------"
-    ##  [3] "            1  The Shawshank Redemption                                               http://www.imdb.com/title/tt0111161/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_1     Frank Darabont                       28341469"
-    ##  [4] "            2  The Godfather                                                          http://www.imdb.com/title/tt0068646/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_2     Francis Ford Coppola                 28341469"
-    ##  [5] "            3  The Godfather: Part II                                                 http://www.imdb.com/title/tt0071562/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_3     Francis Ford Coppola                 28341469"
-    ##  [6] "            4  The Dark Knight                                                        http://www.imdb.com/title/tt0468569/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_4     Christopher Nolan                    28341469"
-    ##  [7] "            5  12 Angry Men                                                           http://www.imdb.com/title/tt0050083/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_5     Sidney Lumet                         28341469"
-    ##  [8] "            6  Schindler's List                                                       http://www.imdb.com/title/tt0108052/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_6     Steven Spielberg                     28341469"
-    ##  [9] "            7  Pulp Fiction                                                           http://www.imdb.com/title/tt0110912/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_7     Quentin Tarantino                    28341469"
-    ## [10] "            8  The Lord of the Rings: The Return of the King                          http://www.imdb.com/title/tt0167260/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0EK8YFF4RKF50FC464MW&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_8     Peter Jackson                        28341469"
+|  IMDB\_Ranking| Movie\_Titles                                 | Link                                                                                                                                                                      | Director             |  Gross\_USA|
+|--------------:|:----------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------|-----------:|
+|              1| The Shawshank Redemption                      | <http://www.imdb.com/title/tt0111161/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_1>  | Frank Darabont       |    28341469|
+|              2| The Godfather                                 | <http://www.imdb.com/title/tt0068646/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_2>  | Francis Ford Coppola |   134966411|
+|              3| The Godfather: Part II                        | <http://www.imdb.com/title/tt0071562/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_3>  | Francis Ford Coppola |    57300000|
+|              4| The Dark Knight                               | <http://www.imdb.com/title/tt0468569/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_4>  | Christopher Nolan    |   534858444|
+|              5| 12 Angry Men                                  | <http://www.imdb.com/title/tt0050083/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_5>  | Sidney Lumet         |          NA|
+|              6| Schindler's List                              | <http://www.imdb.com/title/tt0108052/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_6>  | Steven Spielberg     |    96067179|
+|              7| Pulp Fiction                                  | <http://www.imdb.com/title/tt0110912/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_7>  | Quentin Tarantino    |   107928762|
+|              8| The Lord of the Rings: The Return of the King | <http://www.imdb.com/title/tt0167260/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_8>  | Peter Jackson        |   377845905|
+|              9| Il buono, il brutto, il cattivo               | <http://www.imdb.com/title/tt0060196/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_9>  | Sergio Leone         |     6100000|
+|             10| Fight Club                                    | <http://www.imdb.com/title/tt0137523/?pf_rd_m=A2FGELUUNOQJNL&pf_rd_p=3376940102&pf_rd_r=0RTPSFR6A0M385YPJS6V&pf_rd_s=center-1&pf_rd_t=15506&pf_rd_i=top&ref_=chttp_tt_10> | David Fincher        |    37030102|
 
 Here we have gotten the director for each movie, and also its $USD gross earnings in the USA. The former was fairly straight forward, but the latter proved very challenging, and my solution is admittedly not the cleanest. Movies that did not have a gross USA earnings are given an `NA` in the datatable (34 out of the 250 movies do not have gross USA info).
 
@@ -252,7 +222,10 @@ Here we have gotten the director for each movie, and also its $USD gross earning
 
 -   The if statement ensures the function did not crash for the 34 movies that did not have a gross USA earnings listed.
 
-I also think it's possible to shorten the URL's and still be able to get to the correct site.
+I also think it's possible to shorten the URL's and still be able to get to the correct site, if I was to do this assignment again from the beginning.
+
+Graphical Analysis
+------------------
 
 Let's take a look to see which directors are the most popular:
 
@@ -279,7 +252,7 @@ director_summary %>%
     theme(legend.position="none")
 ```
 
-![](HW10_Scraping_data_from_web_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-5-1.png)
+![](HW10_Scraping_data_from_web_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-6-1.png)
 
 I didn't expect Christopher Nolan to be at the top of my list, but he's actually my favorite director, so I'm not complaining :).
 
@@ -302,7 +275,7 @@ movie_df_merged_GROSS %>%
         axis.text.y = element_text(size=12))
 ```
 
-![](HW10_Scraping_data_from_web_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-6-1.png)
+![](HW10_Scraping_data_from_web_files/figure-markdown_github-ascii_identifiers/unnamed-chunk-7-1.png)
 
 There does not seem to be much of a correlation here. In the future it would be interesting to also consider the year in which the movies were released, and to see if adjusting for inflation changes anythings.
 

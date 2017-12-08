@@ -17,6 +17,7 @@ Use the below table to navigate my homework assignments:
 07 - Automating Data-analysis Pipelines | [Hw07_Automating Data-analysis Pipelines.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw07/Hw07_automating_data_analysis_pipelines.md)
 08 - Building Shiny apps | [HW08_Building_Shiny_apps](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/tree/master/Hw08)
 09 - Building your own R package | [HW09_Building_R_Package](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/tree/master/Hw09)
+10 - Data from the web | [HW10_Scraping_data_from_web.md](https://github.com/sepkamal/STAT545-hw-Kamal-Sepehr/blob/master/Hw10/HW10_Scraping_data_from_web.md)
 
 Enjoy!
 

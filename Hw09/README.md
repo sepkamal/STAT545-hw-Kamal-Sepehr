@@ -1,23 +1,24 @@
-hw10\_Data from the Web
+hw09\_Building your own R package
 ================
 	
-**Homework10 folder for STAT 547.**
+**Homework09 folder for STAT 547.**
 
-For this assignment, I scraped movie data from [imdb.com](http://www.imdb.com/?ref_=nv_home).
+Please see my [powers repo](https://github.com/sepkamal/powers) for my R package.
 
-Please see the file 
+I worked off of the powers package we developed in class. I added a few new features:
+- ability to handle non-numeric values ex. `"5"`
+- ability to drop `NA`'s and display a warning message.
+- a new function which stores the results in a dataframe, and provides a nice plot
+
+In addition, I also added more documentation to explain things thoroughly, and tests to ensure everything was working.
+ 
  
 # Reflection
 
-- [This site](https://stackoverflow.com/questions/2851015/convert-data-frame-columns-from-factors-to-characters) helped with converting columns from type factor to chr.
+- Initially to push my package to github, I tried the method suggested by Vincenzo using "New repo" on the github website. Even after managing to open a linux shell on my PC this method still led to errors. Therefore I followed the `devtools::use_github()` method and was successful. This involved creating an `.Renviron` file.
 
-- I noticed I was referring back to my previous homework assignments quite a few times to check how to do little things like edit strings, specific ggplot2, etc.
+- This assignment was confusing at times, as there are numerous similar elements (vignettes, readme, package document...) that felt redundant. It is my understanding that these would be much more important for a large/functional package, but for the purposes of this assignment felt like overkill.
 
-- I struggled **A LOT** with extracting the Gross USA earnings per movie. Some of the issues included: finding the html item that contained the data,  data in the wrong format (factors), extracting numbers from a string of text, and dealing with movies that did not have a gross USA earnings listed. I solvd this last problem by using an if statement.
+- One thing that was tricky was using `%>%`. It turns out the pipe function is not part of dplyr. dplyr itself loads the package from magrittr, therefore we need to do this too. Also due to its special characters, in order to use it I first had to load it like this ``%>%` <- magrittr::`%>%``. [This site](https://stackoverflow.com/questions/27386694/using-operator-from-dplyr-without-loading-dplyr-in-r) helped.
 
-- [This site](https://stackoverflow.com/questions/14543627/extracting-numbers-from-vectors-of-strings) helped me figure out a way to extract the gross earnings from the string using `parse_number()`.
- 
-
-WOOHOOO!!!! STAT 547 is over!!!
-
-![logo](https://i.pinimg.com/originals/79/74/6b/79746bf8ed9e5451bfe5b84067e642c4.jpg)
+- I ran into a major issue where I kept getting errors saying function `data_frame()` cannot be found. This was likely as this function is from `dplyr`. The problem was I removed this function from my code a while back and replaced it with `data.frame()`, which is from base R. Yet the error message persisted and in my effort to fix it, I broke numerous other things...but it worked in the end.

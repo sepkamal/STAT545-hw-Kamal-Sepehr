@@ -5,7 +5,7 @@ hw10\_Data from the Web
 
 For this assignment, I scraped movie data from [imdb.com](http://www.imdb.com/?ref_=nv_home).
 
-Please see the file 
+Please see my homework assignemnt here 
  
 # Reflection
 

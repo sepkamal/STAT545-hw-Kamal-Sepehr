@@ -40,7 +40,7 @@ movie_titles %>%
   head(10)
 
 # examine middle of list showing movie titles and blank entries
-movie_titles[72:80]
+movie_titles[76:80]
 
 ```
 
@@ -53,17 +53,19 @@ I had to play around a bit to figure out the correct `css` to use in `html_nodes
 ```{r}
 # save only rows 71-569 which contain movie titles to drop other information 
 movie_df <- NA ## added this line due to error in knitting
-movie_df[] <- data.frame(Movie_Titles = movie_titles[71:569]) %>%   ## [] keeps output of lapply as a list
+movie_df[] <- data.frame(Movie_Titles = movie_titles[76:574]) %>%   ## [] keeps output of lapply as a list
 	filter(Movie_Titles != " ") %>%  ## filter out blank rows
 	lapply(as.character, stringsAsFactors = FALSE)  ## conver factor column to chr
 
-# add a row with th IMDB ranking number
-movie_df <- data.frame(movie_df) %>%  ## added data.frame() due to knitting error
-	mutate(IMDB_Ranking = row_number())
 
+# add a row with th IMDB ranking number
+movie_df <- data.frame(Movie_Titles = movie_df[[1]]) %>%  ## added data.frame() due to knitting error
+	mutate(IMDB_Ranking = row_number())
 
 kable(movie_df) %>% 
 	head(5)
+
+
 
 ```
 
@@ -74,7 +76,7 @@ Next lets add links to the IMDB page for each movie as a new column:
 
 
 ```{r setup, cache = F}
-knitr::opts_chunk$set(error = TRUE)
+
 
 # extract html attribute containing movie titles
 link_df <- read_html(imdb_top250_url) %>% 
@@ -82,7 +84,7 @@ link_df <- read_html(imdb_top250_url) %>%
   html_attr('href')
 
 # drop extra rows and convert to dataframe
-movie_urls_df <- data.frame(partial_url = link_df[71:569]) # same row numbers as used for movie titles
+movie_urls_df <- data.frame(partial_url = link_df[76:574]) # same row numbers as used for movie titles
 
 # drop extra rows and format urls
 movie_urls_df <- data.frame(partial_url = movie_urls_df[1]) %>% 
@@ -96,6 +98,9 @@ movie_df_merged <- inner_join(movie_df, movie_urls_df, by = "IMDB_Ranking") %>%
 
 kable(movie_df_merged) %>% 
 	head(5)
+
+View(movie_df_merged)
+
 ```
 
 

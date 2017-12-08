@@ -17,7 +17,7 @@ Please see my homework assignment [HW10_Scraping_data_from_web.md](https://githu
 
 - [This site](https://stackoverflow.com/questions/14543627/extracting-numbers-from-vectors-of-strings) helped me figure out a way to extract the gross earnings from the string using `parse_number()`.
 
-- While my code was working well in RStudio, During knitting I started to get an endless stream of errors. I turned out there were 2 reasons. One is due to poor code that appears to work, but actually doesn't work if you clear your environment. The other reason is that the website changed since the morning, so I had to make subtle changes in my code in order to pull extract the write items from the html.
+- While my code was working well in RStudio, During knitting I started to get an endless stream of errors. It turned out there were 2 reasons. One was due to poor code that appeared to work, but actually didnt't work if you clear your environment. The other reason is that the imdb website changed from when I started my assignmet, so I had to make subtle changes in my code in order to extract the right items from the html.
  
 
 - I think it was a bad idea to perform this assignemnt in a .Rmd. It would have been better to use several R scripts and automate the process. This would allow running entire code chunks fresh, and also would be a way to avoid having to rerun chunks of code that take a very long time to process (due to needing to query 250 websites...)
